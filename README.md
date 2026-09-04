@@ -25,8 +25,6 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 ├── src/                   # Full development source (for mod reconstruction)
 │   ├── OSF_AutonomousManagerScript.psc    # Papyrus source (pre-compile)
 │   ├── modify_standself01.py              # Standing-touch animation builder
-│   ├── modify_chair_touch.py              # Chair-touch animation builder (WIP)
-│   ├── modify_bed_touch.py                # Bed-touch animation builder (WIP)
 │   ├── generate_osf_solo_animations.py    # OSF solo animation generator
 │   ├── build.ps1                          # Build script
 │   ├── build_esm.ps1                      # ESM build script
@@ -34,8 +32,6 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 │   ├── osf.autonomous.json                # MCM config source
 │   ├── osfautonomous-solo.osf.json        # Solo scene manifest
 │   ├── osfautonomous-solo.sounds.json     # Sound mapping
-│   ├── osfautonomous-chairoffice.osf.json # Chair scene manifest (WIP)
-│   ├── osfautonomous-doublebed.osf.json   # Bed scene manifest (WIP)
 │   ├── verify_glb.py                      # GLB structural verifier
 │   ├── verify_glb_structures.py           # Detailed GLB structure check
 │   ├── verify_frame_counts.py             # Frame count verifier
@@ -48,9 +44,6 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 │   ├── compare_*.py                       # GLB comparison scripts
 │   ├── kinematic_profiles.json            # Kinematic parameter profiles
 │   ├── kinematic_profiles_all.json        # All kinematic profiles
-│   ├── agy_chair_analysis.md              # AGY kinematic analysis (chair)
-│   ├── agy_chair_final_review.md          # AGY final review (chair)
-│   ├── agy_bed_analysis.md                # AGY kinematic analysis (bed)
 │   ├── rest_pose.py                       # Rest pose extraction
 │   ├── skeleton_nodes.py                  # Skeleton node mapping
 │   ├── extract_nodes.py                   # Node extraction utility
@@ -94,14 +87,6 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 Animation files are built programmatically using Python scripts in `src/`.
 The builders read source GLB files, modify animation channels (quaternions,
 translations), and output compressed GLB files ready for the game.
-
-### Work in Progress (not yet released)
-
-- `solo_chair_touch` — seated chair animation (HUSH gesture + groin massage)
-- `solo_bed_touch` — supine bed animation (HUSH gesture + groin massage)
-
-These are built by `modify_chair_touch.py` and `modify_bed_touch.py`
-respectively, using kinematic analysis from AGY (Google Gemini).
 
 ## License
 
