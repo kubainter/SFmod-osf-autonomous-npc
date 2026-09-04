@@ -1,0 +1,195 @@
+{
+  "$schema": "https://github.com/ozooma10/osf-ui/blob/main/docs/schema/settings-schema.schema.json",
+  "id": "osf.autonomous",
+  "title": "OSF Autonomous NPC",
+  "description": "Autonomous NPC intimacy interactions during idle/sandbox situations using OSF Animation.",
+  "version": 1,
+  "groups": [
+    {
+      "id": "general",
+      "label": "General",
+      "settings": [
+        {
+          "key": "bEnabled",
+          "label": "Enable Mod",
+          "type": "bool",
+          "default": true,
+          "hint": "Master switch for autonomous NPC interactions."
+        },
+        {
+          "key": "sLocationMode",
+          "label": "Location Mode",
+          "type": "enum",
+          "options": ["ship", "interiors", "everywhere"],
+          "optionLabels": ["Ship Only", "Ship + Outposts + Homes", "Everywhere"],
+          "default": "ship",
+          "hint": "Where autonomous scenes may trigger. Ship Only = player's ship interior. Ship + Outposts + Homes = any interior cell. Everywhere = no location restriction."
+        },
+        {
+          "key": "bCompanionsOnly",
+          "label": "Named Companions Only",
+          "type": "bool",
+          "default": false,
+          "hint": "Restrict to named companion followers (Sarah, Barrett, Sam, Andreja, etc). Generic crew can participate when disabled."
+        },
+        {
+          "key": "bIncludeOutpostNPC",
+          "label": "Include Outpost NPCs",
+          "type": "bool",
+          "default": false,
+          "hint": "Also search for all nearby humanoid NPCs (outpost settlers, lodge residents, etc). Uses ActorTypeNPC keyword. Children and robots are still excluded."
+        },
+        {
+          "key": "iChancePercent",
+          "label": "Trigger Chance (%)",
+          "type": "int",
+          "min": 1,
+          "max": 100,
+          "default": 25,
+          "hint": "Probability that an eligible pair will start a scene on each scan."
+        }
+      ]
+    },
+    {
+      "id": "frequency",
+      "label": "Frequency & Limits",
+      "settings": [
+        {
+          "key": "iMaxConcurrentScenes",
+          "label": "Max Concurrent Scenes",
+          "type": "int",
+          "min": 1,
+          "max": 4,
+          "default": 2,
+          "hint": "Hard limit on simultaneous scenes. 1-2 for small/medium ships, 3-4 for large ships with 8+ crew."
+        },
+        {
+          "key": "fActorCooldownMinutes",
+          "label": "Actor Cooldown (game minutes)",
+          "type": "float",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 1.0,
+          "default": 10.0,
+          "hint": "Minimum in-game time before the same actor can participate in another scene."
+        },
+        {
+          "key": "fMinSceneSpacing",
+          "label": "Min Scene Spacing",
+          "type": "float",
+          "min": 250.0,
+          "max": 1500.0,
+          "step": 50.0,
+          "default": 500.0,
+          "hint": "Minimum distance between concurrent scenes to prevent overlap. 500 = ~7m. Only matters when Max Concurrent Scenes is 2."
+        }
+      ]
+    },
+    {
+      "id": "scene",
+      "label": "Scene Options",
+      "settings": [
+        {
+          "key": "bRequireFurniture",
+          "label": "Require Furniture",
+          "type": "bool",
+          "default": true,
+          "hint": "Only start scenes at beds/couches. Disable to allow standing scenes (may have positioning issues)."
+        },
+        {
+          "key": "bUseMFForFF",
+          "label": "FF Uses MF Animations",
+          "type": "bool",
+          "default": true,
+          "hint": "Allow female-female pairs to use male-female animations as fallback when dedicated FF scenes are unavailable. Unlocks 388+ GE scenes for FF pairs."
+        },
+        {
+          "key": "iStripMode",
+          "label": "Strip Mode",
+          "type": "enum",
+          "options": ["-1", "0", "1"],
+          "optionLabels": ["Inherit (pack default)", "Off", "On"],
+          "default": "-1",
+          "hint": "Control actor undressing during scenes. Inherit uses each scene pack's default. Kissing scenes always stay dressed regardless of this setting."
+        },
+        {
+          "key": "fLoopScale",
+          "label": "Scene Duration Scale",
+          "type": "float",
+          "min": 0.25,
+          "max": 3.0,
+          "step": 0.25,
+          "default": 1.0,
+          "hint": "Multiplier for scene loop counts. 1.0 = unchanged, 0.5 = shorter, 2.0 = longer."
+        },
+        {
+          "key": "bAllowForeplay",
+          "label": "Allow Foreplay / Oral",
+          "type": "bool",
+          "default": true,
+          "hint": "Include kissing, blowjob, oral, handjob tags in rotation."
+        },
+        {
+          "key": "bAllowClassic",
+          "label": "Allow Classic Positions",
+          "type": "bool",
+          "default": true,
+          "hint": "Include missionary, cowgirl, spoon, facedown tags in rotation."
+        },
+        {
+          "key": "bAllowIntense",
+          "label": "Allow Intense Positions",
+          "type": "bool",
+          "default": true,
+          "hint": "Include doggy, reversecowgirl, riding, powerbomb tags in rotation."
+        },
+        {
+          "key": "sSpeedMode",
+          "label": "Animation Speed Mode",
+          "type": "enum",
+          "options": ["static", "dynamic", "random"],
+          "optionLabels": ["Static (slider)", "Dynamic (accelerating)", "Random per scene"],
+          "default": "static",
+          "hint": "Static = fixed speed. Dynamic = starts slow, speeds up each stage. Random = random variation per scene."
+        }
+      ]
+    },
+    {
+      "id": "romance",
+      "label": "Romance & Solo",
+      "settings": [
+        {
+          "key": "bRomanceExclusivity",
+          "label": "Romance Exclusivity Guard",
+          "type": "bool",
+          "default": true,
+          "hint": "Prevent romanced companions (relationship rank 4 = Lover) from participating in autonomous NPC scenes."
+        },
+        {
+          "key": "bStopOnPlayerWalkIn",
+          "label": "Interrupt Scene on Walk-In",
+          "type": "bool",
+          "default": false,
+          "hint": "Stop running scenes if the player approaches. OFF by default to avoid interrupting scenes."
+        },
+        {
+          "key": "bSoloDowntime",
+          "label": "Enable Solo Downtime",
+          "type": "bool",
+          "default": true,
+          "hint": "When no pairs are available, a single idle NPC may play a solo relaxation/self-pleasure animation."
+        },
+        {
+          "key": "fSoloChance",
+          "label": "Solo Trigger Chance (%)",
+          "type": "float",
+          "min": 1.0,
+          "max": 100.0,
+          "step": 5.0,
+          "default": 20.0,
+          "hint": "Chance of solo animation when no pair is found during a scan cycle."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+OSF Autonomous NPC Interactions — Changelog
+=============================================
+
+v1.0.1 — 2026-09-03 — FOMOD fix for MO2 + Vortex compatibility
+------------------------------------------------------
+BUGFIX: FOMOD installer blocked installation in Mod Organizer 2.
+  Root cause: <fileDependency> entries in ModuleConfig.xml checked for
+  physical presence of "SFSE\Plugins\OSF Animation.dll" and "OSFUI.dll".
+  MO2 uses a virtual file system (VFS) — mod files are not physically
+  in Data\, so the FOMOD dependency check failed even when the DLLs
+  were correctly installed through MO2.
+
+  Fix: Removed all <fileDependency> entries from <moduleDependencies>.
+  The "Requirements Check" install step is now always visible and
+  informational only — the user acknowledges dependencies manually.
+  Runtime dependency validation via OSF.IsReady() in the Papyrus script
+  is unaffected and still catches missing OSF at game load.
+
+BUGFIX: Vortex reported Invalid XML (Sch_UndeclaredAttribute +
+  Sch_MissRequiredAttribute). Root cause: attributes not declared in
+  the ModConfig5.0.xsd schema:
+    - "name" on <gameDependency> — undeclared (versionDependency type
+      only declares "version" as required)
+    - "display" on <fileDependency> — undeclared (only "file" and
+      "state" are declared)
+  Fix: Removed the entire <moduleDependencies> block. <gameDependency>
+  cannot be made schema-compliant without introducing a version string
+  that Vortex would also validate. The dependency check was redundant
+  with the informational "Requirements Check" install step.
+
+  Note: The first v1.0.1 build uploaded to Nexus still contained
+  <gameDependency name="Starfield" />. It was replaced with a fully
+  schema-compliant build (no <moduleDependencies> at all).
+BUGFIX: FOMOD installer blocked installation in Mod Organizer 2.
+  Root cause: <fileDependency> entries in ModuleConfig.xml checked for
+  physical presence of "SFSE\Plugins\OSF Animation.dll" and "OSFUI.dll".
+  MO2 uses a virtual file system (VFS) — mod files are not physically
+  in Data\, so the FOMOD dependency check failed even when the DLLs
+  were correctly installed through MO2.
+
+  Fix: Removed all <fileDependency> entries from <moduleDependencies>.
+  The "Requirements Check" install step is now always visible and
+  informational only — the user acknowledges dependencies manually.
+  Runtime dependency validation via OSF.IsReady() in the Papyrus script
+  is unaffected and still catches missing OSF at game load.
+
+BUGFIX: Vortex reported Invalid XML (Sch_UndeclaredAttribute) during
+  FOMOD installation. Root cause: attributes not declared in the
+  ModConfig5.0.xsd schema:
+    - "name" on <gameDependency> — undeclared (versionDependency type
+      only declares "version" as required)
+    - "display" on <fileDependency> — undeclared (only "file" and
+      "state" are declared)
+  Fix: Removed the entire <moduleDependencies> block. The dependency
+  check was redundant with the informational "Requirements Check"
+  install step, and <gameDependency> could not be made schema-compliant
+  without introducing a version string that Vortex would also validate.
+  The "display" attributes were already removed with the <fileDependency>
+  entries in the MO2 fix above.
+
+CHORE: Renamed solo animation from solo_breathe_idle to solo_standing_touch.
+  - GLB file: solo_breathe_idle.glb -> solo_standing_touch.glb
+  - Scene ID: osfautonomous.solo.breathe_idle -> osfautonomous.solo.standing_touch
+  - Scene name: "Solo Natural Breathing Idle" -> "Solo Standing Touch"
+  - Tags: removed idle/breathe/neutral, added standing/touch
+  - All source tools, manifests, and documentation synchronized.
+
+CHORE: Updated public descriptions (README, Nexus) to use
+  "custom solo self-touch animation" instead of "breathing/self-touch".
+
+AFFECTED FILES:
+  fomod/ModuleConfig.xml  — removed fileDependency, always-visible check
+  fomod/info.xml          — version 1.0.0 -> 1.0.1
+  README.txt              — version header + troubleshooting text
+  nexus_description.md    — version reference
+  Data/OSF/osfautonomous-solo.osf.json — scene ID, name, tags, clip path
+  Data/OSF/Autonomous/Animations/solo_standing_touch.glb — renamed
+
+NO SCRIPT CHANGES: OSF_AutonomousManagerScript.pex unchanged from v1.0.0.
+NO NEW CONTENT: Same single solo animation, same audio files.
+
+v1.0.0 — Initial Release
+------------------------
+- Autonomous NPC intimacy scenes using OSF Animation Framework
+- Tier-based scene selection (T1-T5) with pack-specific and fallback tiers
+- FF support via MF fallback animations
+- Solo downtime scenes (one custom solo self-touch animation with audio)
+- 20 configurable settings via OSFUI (F10 menu)
+- Automatic equipment cleanup (Dick.esm / Haters Body) after scenes
+- Romance exclusivity guard, walk-in interrupt, inter-scene proximity guard
+- 4 custom female voice clips (mono WEM)
+- FOMOD installer with Vortex support
+- Requires: SFSE, OSF Animation, OSFUI

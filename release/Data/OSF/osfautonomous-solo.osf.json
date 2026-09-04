@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "name": "OSF Autonomous Solo",
+  "pack": "OSFAutonomous",
+  "stripActors": true,
+  "scenes": [
+    {
+      "id": "osfautonomous.solo.standing_touch",
+      "name": "Solo Standing Touch",
+      "tags": ["solo", "standing", "touch", "female", "osfautonomous"],
+      "roles": [{"name": "solo"}],
+      "stages": [
+        {
+          "loops": 0,
+          "name": "standing_touch",
+          "tags": ["solo", "standing", "touch"],
+          "clips": ["OSF/Autonomous/Animations/solo_standing_touch.glb"],
+          "sound": [
+            {
+              "role": "solo",
+              "repeat": "loop",
+              "spec": "$osfautonomous,{gender},moan",
+              "at": {
+                "low": [0.20, 0.70],
+                "med": [0.45, 0.85]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

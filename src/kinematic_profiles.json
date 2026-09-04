@@ -1,0 +1,963 @@
+{
+  "standself01": {
+    "duration": 20.0,
+    "fps": 24,
+    "active_bones": [
+      {
+        "name": "R_Thigh",
+        "rot_delta_deg": 31.648,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Hips",
+        "rot_delta_deg": 31.4258,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Clavicle",
+        "rot_delta_deg": 26.38,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Thigh",
+        "rot_delta_deg": 25.2983,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Head",
+        "rot_delta_deg": 24.101,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Pinky1",
+        "rot_delta_deg": 21.7275,
+        "freq_hz": 0.601,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Ring1",
+        "rot_delta_deg": 21.3429,
+        "freq_hz": 0.351,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Index",
+        "rot_delta_deg": 18.072,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Wrist",
+        "rot_delta_deg": 15.8397,
+        "freq_hz": 0.1,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Ring",
+        "rot_delta_deg": 15.6792,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Middle1",
+        "rot_delta_deg": 14.6425,
+        "freq_hz": 0.601,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Middle",
+        "rot_delta_deg": 14.4597,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Biceps",
+        "rot_delta_deg": 14.3096,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Thumb",
+        "rot_delta_deg": 13.8677,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Wrist",
+        "rot_delta_deg": 13.8094,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Index1",
+        "rot_delta_deg": 13.3643,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Forearm",
+        "rot_delta_deg": 12.7514,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Index1",
+        "rot_delta_deg": 12.2022,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Neck1",
+        "rot_delta_deg": 11.94,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Spine",
+        "rot_delta_deg": 11.7722,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Ring",
+        "rot_delta_deg": 10.2812,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Middle",
+        "rot_delta_deg": 10.1664,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Middle2",
+        "rot_delta_deg": 10.041,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Neck",
+        "rot_delta_deg": 9.994,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Pinky",
+        "rot_delta_deg": 9.7574,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Ring1",
+        "rot_delta_deg": 9.7099,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Index",
+        "rot_delta_deg": 9.6656,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Ring2",
+        "rot_delta_deg": 9.6232,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Chest",
+        "rot_delta_deg": 9.5502,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Pinky1",
+        "rot_delta_deg": 9.5166,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Spine1",
+        "rot_delta_deg": 8.8365,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Thumb",
+        "rot_delta_deg": 8.7067,
+        "freq_hz": 0.1,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Middle1",
+        "rot_delta_deg": 7.4958,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Biceps",
+        "rot_delta_deg": 7.2203,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Cup",
+        "rot_delta_deg": 6.825,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Pinky",
+        "rot_delta_deg": 5.922,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Spine2",
+        "rot_delta_deg": 5.632,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Index2",
+        "rot_delta_deg": 5.2317,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Clavicle",
+        "rot_delta_deg": 4.0222,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Foot",
+        "rot_delta_deg": 2.6272,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      }
+    ],
+    "translation_deltas": {
+      "COM": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "C_Hips": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Root": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  },
+  "standself02": {
+    "duration": 20.0,
+    "fps": 24,
+    "active_bones": [
+      {
+        "name": "L_Pinky1",
+        "rot_delta_deg": 92.6104,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Ring1",
+        "rot_delta_deg": 89.1579,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Head",
+        "rot_delta_deg": 51.642,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Ring2",
+        "rot_delta_deg": 48.841,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Wrist",
+        "rot_delta_deg": 46.7332,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Pinky2",
+        "rot_delta_deg": 41.7633,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Index1",
+        "rot_delta_deg": 30.4254,
+        "freq_hz": 0.802,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Index",
+        "rot_delta_deg": 27.2212,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Middle1",
+        "rot_delta_deg": 26.4285,
+        "freq_hz": 0.802,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Middle",
+        "rot_delta_deg": 25.5021,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Pinky",
+        "rot_delta_deg": 25.1285,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Ring1",
+        "rot_delta_deg": 24.12,
+        "freq_hz": 0.802,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Wrist",
+        "rot_delta_deg": 19.1741,
+        "freq_hz": 0.651,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Foot",
+        "rot_delta_deg": 18.5395,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Toe",
+        "rot_delta_deg": 18.5036,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Ring",
+        "rot_delta_deg": 17.2545,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Clavicle",
+        "rot_delta_deg": 16.1907,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Neck1",
+        "rot_delta_deg": 14.9085,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Thigh",
+        "rot_delta_deg": 14.7895,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Forearm",
+        "rot_delta_deg": 14.6658,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Index",
+        "rot_delta_deg": 14.1843,
+        "freq_hz": 0.752,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Calf",
+        "rot_delta_deg": 13.5616,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Middle1",
+        "rot_delta_deg": 13.4587,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Middle",
+        "rot_delta_deg": 13.3272,
+        "freq_hz": 0.752,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Index1",
+        "rot_delta_deg": 13.1038,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Calf",
+        "rot_delta_deg": 12.8879,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Biceps",
+        "rot_delta_deg": 12.7036,
+        "freq_hz": 0.1,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Pinky",
+        "rot_delta_deg": 10.5295,
+        "freq_hz": 0.752,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Ring",
+        "rot_delta_deg": 9.8777,
+        "freq_hz": 0.752,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Spine",
+        "rot_delta_deg": 9.4587,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Spine1",
+        "rot_delta_deg": 8.8939,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Neck",
+        "rot_delta_deg": 8.6901,
+        "freq_hz": 0.05,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Chest",
+        "rot_delta_deg": 7.984,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Foot",
+        "rot_delta_deg": 6.9874,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Toe",
+        "rot_delta_deg": 6.1662,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Hips",
+        "rot_delta_deg": 5.9132,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Thigh",
+        "rot_delta_deg": 5.8005,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Forearm",
+        "rot_delta_deg": 4.8484,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Biceps",
+        "rot_delta_deg": 4.0924,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "COM",
+        "rot_delta_deg": 2.3246,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      }
+    ],
+    "translation_deltas": {
+      "COM": {
+        "x": 0.0,
+        "y": 0.025,
+        "z": 0.0
+      },
+      "C_Hips": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Root": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  },
+  "standself03": {
+    "duration": 20.0,
+    "fps": 24,
+    "active_bones": [
+      {
+        "name": "R_Thumb1",
+        "rot_delta_deg": 35.4567,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Thumb",
+        "rot_delta_deg": 31.884,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Wrist",
+        "rot_delta_deg": 30.8647,
+        "freq_hz": 0.401,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Head",
+        "rot_delta_deg": 29.9231,
+        "freq_hz": 0.15,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Pinky",
+        "rot_delta_deg": 26.4586,
+        "freq_hz": 0.2,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Calf",
+        "rot_delta_deg": 23.6473,
+        "freq_hz": 0.752,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Calf",
+        "rot_delta_deg": 23.3772,
+        "freq_hz": 0.752,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Neck1",
+        "rot_delta_deg": 19.6973,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Neck",
+        "rot_delta_deg": 16.9928,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Wrist",
+        "rot_delta_deg": 16.3272,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Toe",
+        "rot_delta_deg": 14.6413,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Clavicle",
+        "rot_delta_deg": 14.6035,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Middle1",
+        "rot_delta_deg": 14.4781,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Ring",
+        "rot_delta_deg": 14.4663,
+        "freq_hz": 0.2,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Index1",
+        "rot_delta_deg": 13.4405,
+        "freq_hz": 0.05,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Thumb",
+        "rot_delta_deg": 12.3278,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Toe",
+        "rot_delta_deg": 12.2211,
+        "freq_hz": 0.752,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Middle",
+        "rot_delta_deg": 11.2481,
+        "freq_hz": 0.351,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Forearm",
+        "rot_delta_deg": 10.3977,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Index",
+        "rot_delta_deg": 10.3167,
+        "freq_hz": 0.351,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Thigh",
+        "rot_delta_deg": 9.716,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Middle",
+        "rot_delta_deg": 9.4217,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "COM",
+        "rot_delta_deg": 8.4331,
+        "freq_hz": 0.752,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Spine",
+        "rot_delta_deg": 8.2657,
+        "freq_hz": 0.251,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Thigh",
+        "rot_delta_deg": 7.9924,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Clavicle",
+        "rot_delta_deg": 6.6047,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Index1",
+        "rot_delta_deg": 6.5505,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "C_Chest",
+        "rot_delta_deg": 6.5019,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Forearm",
+        "rot_delta_deg": 6.5013,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Spine1",
+        "rot_delta_deg": 6.2416,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Biceps",
+        "rot_delta_deg": 6.0075,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Index",
+        "rot_delta_deg": 5.6187,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Biceps",
+        "rot_delta_deg": 3.4681,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Middle1",
+        "rot_delta_deg": 3.272,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Foot",
+        "rot_delta_deg": 2.7372,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Middle2",
+        "rot_delta_deg": 2.33,
+        "freq_hz": 0.251,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Foot",
+        "rot_delta_deg": 2.062,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      }
+    ],
+    "translation_deltas": {
+      "COM": {
+        "x": 0.0,
+        "y": 0.0785,
+        "z": 0.0449
+      },
+      "C_Hips": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Root": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  },
+  "StandCover01": {
+    "duration": 20.0,
+    "fps": 24,
+    "active_bones": [
+      {
+        "name": "L_Toe",
+        "rot_delta_deg": 28.0401,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Wrist",
+        "rot_delta_deg": 23.6648,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Wrist",
+        "rot_delta_deg": 21.0577,
+        "freq_hz": 0.2,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "L_Foot",
+        "rot_delta_deg": 20.659,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Toe",
+        "rot_delta_deg": 19.7854,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Calf",
+        "rot_delta_deg": 18.9776,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Head",
+        "rot_delta_deg": 18.0037,
+        "freq_hz": 0.15,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Calf",
+        "rot_delta_deg": 17.8441,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Foot",
+        "rot_delta_deg": 17.2286,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "C_Chest",
+        "rot_delta_deg": 12.0859,
+        "freq_hz": 0.2,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "L_Thigh",
+        "rot_delta_deg": 12.0203,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Thigh",
+        "rot_delta_deg": 11.6512,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Thumb1",
+        "rot_delta_deg": 8.7705,
+        "freq_hz": 0.2,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "R_Forearm",
+        "rot_delta_deg": 7.6216,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Biceps",
+        "rot_delta_deg": 6.6339,
+        "freq_hz": 0.15,
+        "dominant_axis": "Y"
+      },
+      {
+        "name": "COM",
+        "rot_delta_deg": 6.0481,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Forearm",
+        "rot_delta_deg": 5.4045,
+        "freq_hz": 0.2,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Biceps",
+        "rot_delta_deg": 5.3596,
+        "freq_hz": 0.2,
+        "dominant_axis": "Y"
+      }
+    ],
+    "translation_deltas": {
+      "COM": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "C_Hips": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Root": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  },
+  "StandSurrender01": {
+    "duration": 20.0,
+    "fps": 24,
+    "active_bones": [
+      {
+        "name": "C_Head",
+        "rot_delta_deg": 9.5219,
+        "freq_hz": 0.1,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Chest",
+        "rot_delta_deg": 6.127,
+        "freq_hz": 0.05,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "R_Biceps",
+        "rot_delta_deg": 3.4926,
+        "freq_hz": 0.251,
+        "dominant_axis": "Z"
+      },
+      {
+        "name": "C_Spine",
+        "rot_delta_deg": 3.3299,
+        "freq_hz": 0.1,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "R_Forearm",
+        "rot_delta_deg": 2.8399,
+        "freq_hz": 0.251,
+        "dominant_axis": "X"
+      },
+      {
+        "name": "L_Biceps",
+        "rot_delta_deg": 2.0699,
+        "freq_hz": 0.251,
+        "dominant_axis": "Z"
+      }
+    ],
+    "translation_deltas": {
+      "COM": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0021
+      },
+      "C_Hips": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Root": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  }
+}

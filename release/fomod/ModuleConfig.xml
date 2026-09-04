@@ -1,0 +1,43 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+    <moduleName>OSF Autonomous NPC Interactions</moduleName>
+
+    <requiredInstallFiles>
+        <folder source="Data" destination="" />
+    </requiredInstallFiles>
+
+    <installSteps>
+        <installStep name="Requirements Check">
+            <optionalFileGroups order="Explicit">
+                <group name="OSF Animation Framework is required!" type="SelectExactlyOne">
+                    <plugins order="Explicit">
+                        <plugin name="I understand - I have OSF Animation, OSFUI, and SFSE installed">
+                            <description>OSF Autonomous requires ALL of the following to function:&#10;&#10;1. OSF Animation - Native Scene Framework - provides the OSF animation API (StartSceneByTags, callbacks, etc.)&#10;2. OSFUI - provides the settings system this mod reads ALL its configuration from. Without OSFUI.pex, the script will not load.&#10;3. SFSE - required by both OSF Animation and OSFUI&#10;&#10;Please install these before enabling this mod. Without them, no scenes will play and the quest will fail to start.&#10;&#10;Note: If you use Mod Organizer 2, the installer cannot detect OSF plugins through MO2's virtual file system. This check is informational only - it does not scan your installed mods.</description>
+                            <typeDescriptor><type name="Required" /></typeDescriptor>
+                        </plugin>
+                    </plugins>
+                </group>
+            </optionalFileGroups>
+        </installStep>
+
+        <installStep name="Animation Pack">
+            <optionalFileGroups order="Explicit">
+                <group name="Which animation pack(s) do you use? (Informational only - packs must be downloaded separately)" type="SelectAny">
+                    <plugins order="Explicit">
+                        <plugin name="GE Animation Pack">
+                            <description>Recommended. 388+ MF scenes with furniture support. The mod prioritizes GE scenes when available. Without GE, furniture-anchored scenes will not play.</description>
+                            <typeDescriptor><type name="Recommended" /></typeDescriptor>
+                        </plugin>
+                        <plugin name="SnuSnu Field">
+                            <description>Femdom-oriented scenes with strapon support. The mod automatically uses correct role ordering for SnuSnu scenes. Adds native FF content.</description>
+                            <typeDescriptor><type name="Optional" /></typeDescriptor>
+                        </plugin>
+                        <plugin name="Other / Custom pack">
+                            <description>The mod works with ANY OSF animation pack via catch-all fallback tiers. Your pack's scenes will be found automatically as long as they use standard OSF tags (paired, mf/ff, action tags). You will have fewer scene varieties without GE or SnuSnu.</description>
+                            <typeDescriptor><type name="Optional" /></typeDescriptor>
+                        </plugin>
+                    </plugins>
+                </group>
+            </optionalFileGroups>
+        </installStep>
+    </installSteps>
+</config>

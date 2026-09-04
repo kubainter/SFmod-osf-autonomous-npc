@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "pools": [
+    {
+      "name": "osfautonomous_female_moan_low",
+      "tags": [
+        "osfautonomous",
+        "female",
+        "moan",
+        "low"
+      ],
+      "clips": {
+        "Sound/OSF/Autonomous/Female/ohh.wem": "*Ohh*"
+      }
+    },
+    {
+      "name": "osfautonomous_female_moan_med",
+      "tags": [
+        "osfautonomous",
+        "female",
+        "moan",
+        "med"
+      ],
+      "clips": {
+        "Sound/OSF/Autonomous/Female/oh_yeah.wem": "*Oh yeah*",
+        "Sound/OSF/Autonomous/Female/do_it.wem": "*Do it*",
+        "Sound/OSF/Autonomous/Female/love_it.wem": "*Love it*"
+      }
+    },
+    {
+      "name": "osfautonomous_female_moan_loud",
+      "tags": [
+        "osfautonomous",
+        "female",
+        "moan",
+        "loud"
+      ],
+      "clips": {
+      }
+    },
+    {
+      "name": "osfautonomous_male_moan_low",
+      "tags": [
+        "osfautonomous",
+        "male",
+        "moan",
+        "low"
+      ],
+      "clips": {
+      }
+    },
+    {
+      "name": "osfautonomous_male_moan_med",
+      "tags": [
+        "osfautonomous",
+        "male",
+        "moan",
+        "med"
+      ],
+      "clips": {
+      }
+    },
+    {
+      "name": "osfautonomous_male_moan_loud",
+      "tags": [
+        "osfautonomous",
+        "male",
+        "moan",
+        "loud"
+      ],
+      "clips": {
+      }
+    }
+  ]
+}
