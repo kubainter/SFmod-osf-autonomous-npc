@@ -1,5 +1,5 @@
 OSF Autonomous NPC Interactions
-v1.0.1 — FOMOD fix for MO2 + Vortex compatibility
+v1.0.4 — Spaceflight Critical Hotfix
 Author: Botan
 
 Includes one custom solo self-touch animation with audio. Paired scenes are

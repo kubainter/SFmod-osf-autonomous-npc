@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "name": "OSF Autonomous Solo - DoubleBed",
+  "pack": "OSFAutonomous",
+  "stripActors": true,
+  "anchor": {
+    "base": [
+      "Starfield.esm|0x1E2800",
+      "Starfield.esm|0x00468C",
+      "Starfield.esm|0x00468B",
+      "Starfield.esm|0x00468A",
+      "Starfield.esm|0x1E2722",
+      "Starfield.esm|0x004689",
+      "Starfield.esm|0x004688",
+      "Starfield.esm|0x004687",
+      "Starfield.esm|0x1E2802",
+      "Starfield.esm|0x004686",
+      "Starfield.esm|0x004685",
+      "Starfield.esm|0x004684",
+      "Starfield.esm|0x112343",
+      "Starfield.esm|0x12A578",
+      "Starfield.esm|0x2E395B"
+    ]
+  },
+  "roles": {
+    "solo": {
+      "preserveBones": [
+        "C_Belly",
+        "C_GenitalsRoot",
+        "L_ArmMass",
+        "L_Nipple",
+        "L_Pecs",
+        "L_Vag",
+        "R_ArmMass",
+        "R_Nipple",
+        "R_Pecs",
+        "R_Vag"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "osfautonomous.solo.bed_touch",
+      "name": "Solo Bed Touch",
+      "tags": [
+        "solo",
+        "bed",
+        "doublebed",
+        "lying",
+        "supine",
+        "touch",
+        "female",
+        "osfautonomous"
+      ],
+      "roles": [
+        {
+          "name": "solo"
+        }
+      ],
+      "stages": [
+        {
+          "loops": 0,
+          "name": "bed_touch",
+          "tags": [
+            "solo",
+            "bed",
+            "touch"
+          ],
+          "clips": [
+            "OSF/Autonomous/Animations/solo_bed_touch.glb"
+          ],
+          "sound": [
+            {
+              "role": "solo",
+              "repeat": "loop",
+              "spec": "$osfautonomous,{gender},moan",
+              "at": {
+                "low": [0.20, 0.70],
+                "med": [0.45, 0.85]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

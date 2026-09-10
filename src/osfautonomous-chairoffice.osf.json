@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "name": "OSF Autonomous Solo - ChairOffice",
+  "pack": "OSFAutonomous",
+  "stripActors": true,
+  "anchor": {
+    "base": [
+      "Starfield.esm|0x12F277",
+      "Starfield.esm|0x10719F",
+      "Starfield.esm|0x1845D5"
+    ]
+  },
+  "roles": {
+    "solo": {
+      "preserveBones": [
+        "C_Belly",
+        "C_GenitalsRoot",
+        "L_ArmMass",
+        "L_Nipple",
+        "L_Pecs",
+        "L_Vag",
+        "R_ArmMass",
+        "R_Nipple",
+        "R_Pecs",
+        "R_Vag"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "osfautonomous.solo.chair_touch",
+      "name": "Solo Chair Touch",
+      "tags": [
+        "solo",
+        "chair",
+        "chairoffice",
+        "sitting",
+        "seated",
+        "touch",
+        "female",
+        "osfautonomous"
+      ],
+      "roles": [
+        {
+          "name": "solo"
+        }
+      ],
+      "stages": [
+        {
+          "loops": 0,
+          "name": "chair_touch",
+          "tags": [
+            "solo",
+            "chair",
+            "touch"
+          ],
+          "clips": [
+            "OSF/Autonomous/Animations/solo_chair_touch.glb"
+          ],
+          "sound": [
+            {
+              "role": "solo",
+              "repeat": "loop",
+              "spec": "$osfautonomous,{gender},moan",
+              "at": {
+                "low": [0.20, 0.70],
+                "med": [0.45, 0.85]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

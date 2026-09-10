@@ -14,26 +14,16 @@ Skrócona instrukcja i twardy zestaw zasad dla wszystkich operacji na tym worksp
 
 ---
 
-## Mapa katalogów
+## Mapa katalogów (względem repo root)
 
-Pełna mapa katalogów z opisami znajduje się w `.devin/directory_map.md`.
-Kluczowe obszary:
-
-- `G:\Starfield\` — główny katalog gry
-- `Data\` — główne pliki gry i modów (`.esm`, `.esp`, `.ba2`, `.pex`, `Scripts\Source\`)
-- `StarfieldDev\` — workspace deweloperski (źródła, release, backupy, temp)
-  - `StarfieldDev\src\` — źródła pluginów SFSE/C++ i modów (OSFAutonomous, HighlightQuestGivers, sfse-0.2.21)
-  - `StarfieldDev\animation_references\` — referencyjne animacje .af + GLB z Blender
-  - `StarfieldDev\release\` — release ZIPy i build output
-  - `StarfieldDev\backups\` — backupy plików gry i modów
-  - `StarfieldDev\temp\` — pliki tymczasowe z ekstrakcji
-  - `StarfieldDev\extracted_vanilla\` — ekstrakcja vanilla animacji
-- `Tools\` — Papyrus Compiler, Archive2, Champollion, AssetWatcher, xEdit/sseEdit, Creation Kit
-- `SFSE\`/`Plugins\` — ładowane pluginy SFSE
-- `Logs\` i `C:\Users\kubai\Documents\My Games\Starfield\Logs\Script\` — logi Papyrus, SFSE, modów
-- `.agents\` — reguły agenta
-- `.devin\` — pliki meta: `directory_map.md`, `anti_patterns.md`, `lessons_learned.md`
-- `materials\`, `meshes\`, `textures\`, `SAF\`, `Scripts\` — **Vortex-managed** (hardlinki). Nie ruszaj ręcznie.
+- `release/` — pliki dystrybucyjne, 1:1 z katalogiem gry `Data/`
+  - `release/Data/` — ESM, skrypty (.pex + .psc), manifesty OSF, animacje, dźwięki
+  - `release/fomod/` — konfiguracja FOMOD installera
+  - `release/README.txt`, `release/CHANGELOG.txt` — dokumentacja dystrybucyjna
+- `src/` — narzędzia build, skrypty Python, manifesty źródłowe
+- `docs/` — dokumentacja projektu
+- `build_zip.ps1` — buduje ZIP z `release/` (wyklucza `.psc`)
+- `sync_to_game.ps1` — kopiuje `release/Data/` do katalogu gry
 
 ---
 
@@ -82,17 +72,16 @@ Jeśli użytkownik prosi o:
 
 ### Tworzenie / kompilację pluginu SFSE/C++
 
-1. Źródła znajdują się w `StarfieldDev\src\`.
-2. Upewnij się, że wersja SFSE w `StarfieldDev\src\sfse-*` odpowiada aktualnej wersji gry (`Starfield.exe`, `sfse_1_*.dll`).
-3. Build wykonaj w odpowiednim katalogu `StarfieldDev\src\<nazwa_pluginu>`, nie bezpośrednio w katalogu gry.
+1. Źródła build skryptów znajdują się w `src/`.
+2. Build wykonaj z poziomu repo root, nie bezpośrednio w katalogu gry.
 
 ### Budowanie release (ZIP)
 
-1. Release staging znajduje się w `StarfieldDev\release\OSFAutonomous\`.
-2. ZIP buduj z whitelisty plików dystrybucyjnych — **nigdy** nie pakuj całego katalogu `Data\` rekursywnie.
-3. **Zabronione**: pakowanie katalogu `Data\Scripts\Source\` (pliki `.psc`) do ZIP. Tylko skompilowane `.pex` w `Data\Scripts\`.
-4. **Zabronione**: pakowanie `dev_source\`, `nexus_description.md`, `CHANGELOG.txt`, narzędzi Python, skryptów build, ani artefaktów deweloperskich.
-5. Po każdej zmianie w release **aktualizuj `CHANGELOG.txt`** — opisz co zostało dodane/zmienione/naprawione w tej wersji. Format:
+1. `release/` jest 1:1 z katalogiem gry — edytuj pliki tam.
+2. **Sync do gry**: `powershell -File sync_to_game.ps1` — kopiuje `release/Data/` do katalogu gry.
+3. **Build ZIP**: `powershell -File build_zip.ps1 -Version X.Y.Z` — pakuje `release/` do ZIP (bez `.psc`).
+4. **Zabronione w ZIP**: `.psc` (skrypt automatycznie usuwa ze staging), narzędzia Python, skrypty build.
+5. Po każdej zmianie **aktualizuj `release/CHANGELOG.txt`**. Format:
    ```
    vX.Y.Z — YYYY-MM-DD — krótki tytuł
    ------------------------------------------------------
@@ -100,26 +89,25 @@ Jeśli użytkownik prosi o:
    CHANGED: co zmieniono
    BUGFIX: co naprawiono (bez przyczyny)
    ```
-6. Po zbudowaniu ZIP, zweryfikuj zawartość wypakowując go do katalogu tymczasowego i sprawdzając listę plików oraz wersję w `fomod\info.xml`.
-7. Archiwizuj poprzednie wersje ZIP do `StarfieldDev\release\archive\` przed nadpisaniem/wydaniem aktualnego.
+6. Po zbudowaniu ZIP, zweryfikuj zawartość wypakowując go i sprawdzając listę plików oraz wersję w `fomod/info.xml`.
 
 ### Analizę crasha / CTD
 
-1. Przeczytaj ostatni log SFSE: `G:\Starfield\Data\SFSE\Plugins\*.log`.
+1. Przeczytaj ostatni log SFSE w `<game>/Data/SFSE/Plugins/*.log`.
 2. Sprawdź ostatnie wpisy `Papyrus.0.log` przed czasem crasha.
-3. Nie usuwaj ani nie nadpisuj `Starfield.exe`, `bink2w64.dll` ani innych podstawowych DLL; przywracaj z `StarfieldDev\backups\` tylko te pliki, które są backupami modów.
+3. Nie usuwaj ani nie nadpisuj `Starfield.exe`, `bink2w64.dll` ani innych podstawowych DLL.
 
 ---
 
 ## Silnik i narzędzia
 
-- **Silnik**: Creation Engine / Starfield (Build z `Starfield.exe` i `sfse_1_*.dll`).
-- **Skrypty**: Papyrus (kompilator w `Tools\Papyrus Compiler\PapyrusCompiler.exe`). Szczegółowa instrukcja kompilacji: `.devin/papyrus_build.md`.
+- **Silnik**: Creation Engine / Starfield (`Starfield.exe` i `sfse_1_*.dll`).
+- **Skrypty**: Papyrus (kompilator: `PapyrusCompiler.exe`). Szczegółowa instrukcja: `docs/papyrus_build.md`.
 - **Edytor danych**: xEdit / SF1Edit, Archive2 dla `*.ba2`.
-- **SFSE**: `sfse_loader.exe`, `sfse_1_*.dll`, pluginy w `Data\SFSE\Plugins\`.
-- **Deasembler skryptów**: Champollion (`Tools\Champollion\Champollion.exe`).
-- **Konfiguracja gry**: `StarfieldCustom.ini`, `StarfieldPrefs.ini` w `C:\Users\kubai\Documents\My Games\Starfield\`.
-- **Lista modów**: `C:\Users\kubai\AppData\Local\Starfield\plugins.txt`.
+- **SFSE**: `sfse_loader.exe`, `sfse_1_*.dll`, pluginy w `Data/SFSE/Plugins/`.
+- **Deasembler skryptów**: Champollion (`Champollion.exe`).
+- **Konfiguracja gry**: `StarfieldCustom.ini`, `StarfieldPrefs.ini` w `Documents/My Games/Starfield/`.
+- **Lista modów**: `AppData/Local/Starfield/plugins.txt`.
 
 Ograniczenia, o których zawsze trzeba pamiętać:
 
@@ -143,7 +131,7 @@ Ograniczenia, o których zawsze trzeba pamiętać:
 
 ## Antywzorce i lekcje
 
-Pełna lista: `.devin/anti_patterns.md` i `.devin/lessons_learned.md`.
+Pełna lista: `docs/anti_patterns.md` i `docs/lessons_learned.md`.
 Najważniejsze zagrożenia, na które musisz zwrócić szczególną uwagę:
 
 - `GetFormFromFile` w szybkich timerach / pętlach → inicjalizuj formy raz w `OnInit` / `Properties`.
@@ -165,23 +153,23 @@ Najważniejsze zagrożenia, na które musisz zwrócić szczególną uwagę:
 
 **[KRYTYCZNE]: Poniższe reguły są BEZWZGLĘDNE. Naruszenie ich oznacza błąd krytyczny i przerwanie zadania.**
 
-Google Antigravity (`agy`) to zewnętrzne narzędzie bazujące na Google Gemini[cite: 3]. Pamiętaj, że Agy nie widzi historii naszej konwersacji (Twoich poprzednich promptów) ani Twojego kontekstu sesji[cite: 3]. 
+Google Antigravity (`agy`) to zewnętrzne narzędzie bazujące na Google Gemini. Pamiętaj, że Agy nie widzi historii naszej konwersacji (Twoich poprzednich promptów) ani Twojego kontekstu sesji. 
 
 ### 7.1. Automatyczne Triggery (Kiedy MUSISZ wezwać Agy)
-Masz **KATEGORYCZNY ZAKAZ** zamykania zadań związanych z kodem bez wcześniejszej konsultacji z Agy przez funkcję `agy_run_sync`[cite: 3], jeśli wystąpi jedna z poniższych sytuacji:
-- Użytkownik użyje tagu `@Agy` lub poprosi o "peer review", "second opinion" lub "cross-model verification"[cite: 3].
+Masz **KATEGORYCZNY ZAKAZ** zamykania zadań związanych z kodem bez wcześniejszej konsultacji z Agy przez funkcję `agy_run_sync`, jeśli wystąpi jedna z poniższych sytuacji:
+- Użytkownik użyje tagu `@Agy` lub poprosi o "peer review", "second opinion" lub "cross-model verification".
 - Modyfikujesz skrypty Papyrus dotyczące wydajności (timery, pętle, `GetFormFromFile`).
 - Zmieniasz warunki w plikach `.esm` (CTDA, filtrowanie aktorów).
 - Analizujesz przyczyny Crash to Desktop (CTD).
 - Dokonujesz **kompleksowej / całościowej zmiany** (np. pełny refactor opisu na Nexus, przebudowa dużych fragmentów logiki, masowa aktualizacja dokumentacji, synchronizacja `release/` ze źródłami) — przed uznaniem zadania za zakończone uruchom review od innego agenta (agy), z promptem zawierającym: self-contained kontekst (ścieżki plików + stan przed/po), listę zmian oraz prośbę o weryfikację każdego twierdzenia względem kodu.
 
 ### 7.2. Procedura Peer Review (Workflow)
-Jeśli piszesz lub zmieniasz jakikolwiek kod, przed zgłoszeniem mi zakończenia pracy musisz wykonać następujący protokół[cite: 3]:
+Jeśli piszesz lub zmieniasz jakikolwiek kod, przed zgłoszeniem mi zakończenia pracy musisz wykonać następujący protokół:
 
-1. **Self-Contained Prompt:** Skonstruuj zapytanie do `agy_run_sync`[cite: 3]. Musi ono zawierać zadanie, kontekst (zmieniony kod), oraz twarde ograniczenia z tego pliku (np. Papyrus jest jednowątkowy, GetFormFromFile nie w timerach, używaj Archive2.exe do BA2)[cite: 3].
-2. **Pobranie ID:** Zawsze zapamiętaj zwrócony `conversation_id` z pierwszego wywołania – to Twój klucz do utrzymania kontekstu dla kolejnych zapytań[cite: 3]. 
-3. **Serializacja:** Nigdy nie wywołuj dwóch zapytań równolegle na tym samym `conversation_id`[cite: 3].
-4. **Zasada Zerowa (WERYFIKACJA):** Agy potrafi halucynować FormID oraz strukturę ESM[cite: 3]. Masz obowiązek zweryfikować każde twierdzenie Agy za pomocą własnych narzędzi (np. `read`, `grep`, lub skryptu `verify_agy_claims.py` z katalogu `.devin/`) ZANIM zastosujesz te porady w kodzie[cite: 3].
+1. **Self-Contained Prompt:** Skonstruuj zapytanie do `agy_run_sync`. Musi ono zawierać zadanie, kontekst (zmieniony kod), oraz twarde ograniczenia z tego pliku (np. Papyrus jest jednowątkowy, GetFormFromFile nie w timerach, używaj Archive2.exe do BA2).
+2. **Pobranie ID:** Zawsze zapamiętaj zwrócony `conversation_id` z pierwszego wywołania – to Twój klucz do utrzymania kontekstu dla kolejnych zapytań. 
+3. **Serializacja:** Nigdy nie wywołuj dwóch zapytań równolegle na tym samym `conversation_id`.
+4. **Zasada Zerowa (WERYFIKACJA):** Agy potrafi halucynować FormID oraz strukturę ESM. Masz obowiązek zweryfikować każde twierdzenie Agy za pomocą własnych narzędzi (np. `read`, `grep`, skryptów weryfikacyjnych w `src/`) ZANIM zastosujesz te porady w kodzie.
 
 ### 7.3. AGY jako Sub-Agent Kinematyczny (protokół pre-implementation)
 
@@ -191,7 +179,7 @@ Oprócz peer-review po implementacji, AGY MUSI być używane **PRZED** zmianą p
    - Aktualne wartości parametrów z `modify_standself01.py`
    - Definition of Done użytkownika (pozycja dłoni, prędkość, brak penetracji)
    - Historię iteracji (jakie wartości były testowane, co użytkownik powiedział)
-   - Rig referencyjny: `G:\Starfield\sf_animation_io_src\sf_animation_io-master\API\Assets\Rigs\human_female.rig`
+   - Rig referencyjny: `sf_animation_io_src/sf_animation_io-master/API/Assets/Rigs/human_female.rig`
 2. **Samodzielne obliczenia AGY**: AGY ma wykonać FK (Forward Kinematics) z riga i obliczyć rzeczywistą pozycję końcówki łańcucha kostnego (np. dłoni/palców) dla proponowanych wartości.
 3. **Rekomendacje**: AGY zasugeruje konkretne wartości liczbowe z uzasadnieniem kinematycznym (cm przesunięcia, stopnie obrotu, ryzyko penetracji).
 4. **Zderzenie z moimi założeniami**: Porównaj rekomendacje AGY ze swoimi. Jeśli się różnią — zaufaj obliczeniom FK AGY (mają bazę w rigu), ale zweryfikuj logiczność.

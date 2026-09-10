@@ -1,6 +1,41 @@
 OSF Autonomous NPC Interactions — Changelog
 =============================================
 
+v1.0.4 — 2026-09-10 — Spaceflight Critical Hotfix
+-------------------------------------------------------------------------
+BUGFIX: Fixed an issue where NPCs would spawn and get stuck in animations outside the ship during spaceflight.
+  Root cause: The mod previously checked if the player was sitting in *any* furniture to block scenes (`GetSitState() != 0`). 
+  This logic failed during 3rd-person flight or fast-travel to space, allowing scenes to start while the ship was moving. 
+  Since OSF scenes pin actors to static world coordinates, they would clip outside the moving ship. Worse, if left behind in a space cell, they would permanently lose navmesh when the cell unloaded, causing severe engine lag.
+  
+  Fix: Replaced the sit-state check with a strict check for active piloting (`GetSpaceship() != None`).
+  Additionally, added a new check to instantly clear all active scenes when the player takes the pilot seat (`OnSit` event) and unconditionally purge ghost scenes when landing in an exterior space cell (`OnLocationChange`). 
+  Scenes can still properly trigger if you stand up from the pilot's seat and walk around the ship interior in orbit.
+
+AFFECTED FILES:
+  Data/Scripts/Source/OSF_AutonomousManagerScript.psc
+  Data/OSFAutonomous.esm
+  fomod/info.xml
+  README.txt
+
+v1.0.3 — 2026-09-08 — Header cleanup (removed legacy TES4.DATA subrecord)
+-------------------------------------------------------------------------
+BUGFIX: Removed legacy DATA subrecord from TES4 header in OSFAutonomous.esm.
+  Root cause: Previous release builds included an 8-byte DATA subrecord
+  after the MAST entry, a carryover from Skyrim/Fallout 4 plugin conventions.
+  Starfield's Creation Engine 2 does not use this subrecord, and mod tools
+  (such as Wrye Bash) rejected the plugin with:
+  "Unexpected subrecord: TES4.DATA".
+
+  Fix: Rebuilt plugin header with only canonical Starfield subrecords
+  (HEDR, CNAM, MAST, BNAM, INCC). File size reduced from 316 B to 311 B.
+  Clean and error-free in all mod managers and diagnostic tools.
+
+AFFECTED FILES:
+  Data/OSFAutonomous.esm  — updated ESM without legacy DATA subrecord
+  fomod/info.xml          — version bumped to 1.0.3
+  README.txt              — version bumped to 1.0.3
+
 v1.0.1 — 2026-09-03 — FOMOD fix for MO2 + Vortex compatibility
 ------------------------------------------------------
 BUGFIX: FOMOD installer blocked installation in Mod Organizer 2.

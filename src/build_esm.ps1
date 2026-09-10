@@ -71,9 +71,10 @@ $subHedr = New-SubrecordBytes "HEDR" $hedrData
 $cnamBytes = [System.Text.Encoding]::ASCII.GetBytes("OSFAutonomous`0")
 $subCnam = New-SubrecordBytes "CNAM" $cnamBytes
 
-# MAST/DATA: Starfield.esm (only master needed)
+# MAST: Starfield.esm (only master needed)
+# NOTE: Do NOT add DATA subrecord after MAST — that is a legacy Skyrim/FO4 format.
+# Starfield does not use it, and Wrye Bash rejects it with "Unexpected subrecord: TES4.DATA".
 $subMaster = New-SubrecordBytes "MAST" ([System.Text.Encoding]::ASCII.GetBytes("Starfield.esm`0"))
-$subData = New-SubrecordBytes "DATA" ([byte[]](0, 0, 0, 0, 0, 0, 0, 0))
 
 # BNAM: author
 $subBnam = New-SubrecordBytes "BNAM" ([System.Text.Encoding]::ASCII.GetBytes("Botan`0"))
@@ -82,7 +83,7 @@ $subBnam = New-SubrecordBytes "BNAM" ([System.Text.Encoding]::ASCII.GetBytes("Bo
 $subIncc = New-SubrecordBytes "INCC" ([System.BitConverter]::GetBytes([uint32]0))
 
 # Assemble TES4 subrecords
-$tes4Subrecords = Concat-Bytes (Concat-Bytes (Concat-Bytes (Concat-Bytes (Concat-Bytes $subHedr $subCnam) $subMaster) $subData) $subBnam) $subIncc
+$tes4Subrecords = Concat-Bytes (Concat-Bytes (Concat-Bytes (Concat-Bytes $subHedr $subCnam) $subMaster) $subBnam) $subIncc
 
 # TES4 record: flags 0x00000001 (ESM only), FormID 0
 # Do NOT use 0x00000101 — bit 0x100 is not valid for Starfield ESM files
