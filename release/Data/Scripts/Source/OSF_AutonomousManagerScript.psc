@@ -41,6 +41,8 @@ int iTagRotationIndex = 0      ; rotates through mood tags for scene variety
 int Property MANAGER_QUEST_FORMID = 0x01000801 Auto Const
 {File-local FormID of this quest in OSFAutonomous.esm. Optional dedup probe only —
  a variant with a different quest FormID (e.g. LIGHT) must still pass via boundness.}
+OSF_AutonomousManagerScript managerQuestCache = None  ; resolved once — no GetFormFromFile in timers/events
+bool managerQuestLookedUp = false
 
 ; --- Version migration (prevents save corruption on script updates) ---
 int Property CURRENT_VERSION = 4 AutoReadOnly
@@ -393,11 +395,14 @@ bool Function IsBoundInstance()
     if !IsBoundGameObjectAvailable()
         return false  ; save-carried ghost — detached from any game object
     endif
-    OSF_AutonomousManagerScript live = Game.GetFormFromFile(MANAGER_QUEST_FORMID, "OSFAutonomous.esm") as OSF_AutonomousManagerScript
-    if live == None
+    if !managerQuestLookedUp
+        managerQuestLookedUp = true
+        managerQuestCache = Game.GetFormFromFile(MANAGER_QUEST_FORMID, "OSFAutonomous.esm") as OSF_AutonomousManagerScript
+    endif
+    if managerQuestCache == None
         return true   ; quest record moved/renamed in this variant — bound is enough
     endif
-    return live == self
+    return managerQuestCache == self
 EndFunction
 
 ; ===========================================================================

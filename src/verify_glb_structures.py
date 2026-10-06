@@ -1,3 +1,4 @@
+import os
 """Verify AGY claims about GLB structures before building modify_chair_touch.py"""
 import gzip, struct, json
 
@@ -104,13 +105,13 @@ def analyze(path, label):
 
 # Analyze our solo animation
 our_nodes = analyze(
-    'G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb',
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_standing_touch.glb",
     'solo_standing_touch.glb (OUR BASE)'
 )
 
 # Analyze GE donor
 ge_nodes = analyze(
-    'G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb',
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb",
     'Blowjob07-ChairOffice-1.glb (GE DONOR)'
 )
 

@@ -1,8 +1,9 @@
+import os
 import gzip, struct, json, math
 
 import sys
 
-path = sys.argv[1] if len(sys.argv) > 1 else 'G:/Starfield/Data/SAF/Animations/standself01.glb'
+path = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/standself01.glb"
 with gzip.open(path, 'rb') as gz:
     data = gz.read()
 

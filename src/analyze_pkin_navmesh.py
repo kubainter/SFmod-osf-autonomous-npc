@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Check PKIN navmesh, FURN keywords vs vanilla, and PACK records for NPC restrictions."""
 import struct
 import sys
@@ -239,7 +240,7 @@ def parse_esm(filepath):
     return pkin_navmesh_info, furn_info, pack_info
 
 if __name__ == '__main__':
-    filepath = r"G:\Starfield\Data\stroudpremiumedition.esm"
+    filepath = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
     print(f"Analyzing: {filepath}\n")
 
     pkins, furns, packs = parse_esm(filepath)

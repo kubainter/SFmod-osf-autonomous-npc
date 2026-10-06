@@ -1,6 +1,7 @@
+import os
 import json, glob, os, sys
 
-osf_dir = r'G:\Starfield\Data\OSF'
+osf_dir = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF"
 
 # Print full structure of first scene with sequence tag
 for f in glob.glob(os.path.join(osf_dir, '*.osf.json')):

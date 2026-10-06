@@ -152,8 +152,9 @@ if (Test-Path $zipPath) {
 # ---------------------------------------------------------------------------
 Write-Host "`nPackaging -> $zipPath..." -ForegroundColor Cyan
 
-# Path to 7-Zip executable
-$7zExe = "C:\Program Files\7-Zip\7z.exe"
+# Path to 7-Zip executable: PATH first, then the default install location
+$7zExe = (Get-Command 7z.exe -ErrorAction SilentlyContinue).Source
+if (-not $7zExe) { $7zExe = "$env:ProgramFiles\7-Zip\7z.exe" }
 
 if (Test-Path $7zExe) {
     Write-Host "Using 7-Zip for compression to preserve correct folder structure for MO2/Vortex..." -ForegroundColor Cyan

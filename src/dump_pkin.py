@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Dump raw structure of companion room PKIN records to understand the format."""
 import struct
 import sys
@@ -8,7 +9,7 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 HEADER_SIZE = 24
 GRUP_HEADER_SIZE = 24
 
-filepath = r"G:\Starfield\Data\stroudpremiumedition.esm"
+filepath = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
 with open(filepath, 'rb') as f:
     data = f.read()
 

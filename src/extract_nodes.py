@@ -1,9 +1,10 @@
+import os
 import gzip
 import json
 import struct
 
-GLB_PATH = r"G:\Starfield\Data\SAF\Animations\standself01.glb"
-OUT_PATH = r"G:\Starfield\src\OSFAutonomous\skeleton_nodes.py"
+GLB_PATH = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SAF\\Animations\\standself01.glb"
+OUT_PATH = os.environ.get("STARFIELD_ROOT", ".") + r"\\src\\OSFAutonomous\\skeleton_nodes.py"
 
 with open(GLB_PATH, "rb") as f:
     raw = f.read()

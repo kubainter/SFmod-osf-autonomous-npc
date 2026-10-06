@@ -23,7 +23,10 @@ MCM_SETTINGS_PATH = (
 )
 
 # --- Papyrus toolchain (game install, overridable via env) --------------------
-GAME_ROOT = Path(os.environ.get("STARFIELD_ROOT", r"G:\Starfield"))
+# Set STARFIELD_ROOT to your Starfield install dir to enable compile tests;
+# without it toolchain-dependent tests are skipped automatically.
+_GAME_ROOT = os.environ.get("STARFIELD_ROOT", "")
+GAME_ROOT = Path(_GAME_ROOT) if _GAME_ROOT else Path("__unset__")
 PAPYRUS_COMPILER = GAME_ROOT / "Tools" / "Papyrus Compiler" / "PapyrusCompiler.exe"
 PAPYRUS_SOURCE_DIR = GAME_ROOT / "Data" / "Scripts" / "Source"
 PAPYRUS_FLAGS = PAPYRUS_SOURCE_DIR / "Base" / "Starfield_Papyrus_Flags.flg"

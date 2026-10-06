@@ -1,12 +1,17 @@
 $ErrorActionPreference = "Stop"
 # Source of truth: repo release dir. Compiling in-place inside the game dirs is
 # flaky (PapyrusCompiler reports bogus "filename does not match script name" /
-# crashes on G:\Starfield paths), so we compile a copy under %TEMP% and deploy.
+# crashes on game-directory paths), so we compile a copy under %TEMP% and deploy.
+$GameRoot = $env:STARFIELD_ROOT
+if (-not $GameRoot) {
+    Write-Host "ERROR: set the STARFIELD_ROOT environment variable to your Starfield install directory." -ForegroundColor Red
+    exit 1
+}
 $ScriptSource = "$PSScriptRoot\..\release\Data\Scripts\Source\OSF_AutonomousManagerScript.psc"
-$PapyrusCompiler = "G:\Starfield\Tools\Papyrus Compiler\PapyrusCompiler.exe"
-$PapyrusSourceDir = "G:\Starfield\Data\Scripts\Source"
+$PapyrusCompiler = "$GameRoot\Tools\Papyrus Compiler\PapyrusCompiler.exe"
+$PapyrusSourceDir = "$GameRoot\Data\Scripts\Source"
 $ReleasePex = "$PSScriptRoot\..\release\Data\Scripts\OSF_AutonomousManagerScript.pex"
-$GamePex = "G:\Starfield\Data\Scripts\OSF_AutonomousManagerScript.pex"
+$GamePex = "$GameRoot\Data\Scripts\OSF_AutonomousManagerScript.pex"
 
 $work = Join-Path ([System.IO.Path]::GetTempPath()) ("osf_pbuild_" + [System.IO.Path]::GetRandomFileName())
 New-Item -ItemType Directory -Path "$work\out" -Force | Out-Null

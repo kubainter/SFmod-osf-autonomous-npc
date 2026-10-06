@@ -4,7 +4,12 @@
 
 $ErrorActionPreference = "Stop"
 
-$EsmPath = "G:\Starfield\Data\OSFAutonomous.esm"
+$GameRoot = $env:STARFIELD_ROOT
+if (-not $GameRoot) {
+    Write-Host "ERROR: set the STARFIELD_ROOT environment variable to your Starfield install directory." -ForegroundColor Red
+    exit 1
+}
+$EsmPath = "$GameRoot\Data\OSFAutonomous.esm"
 $RecordVersion = [uint16]0x0246   # Starfield record version (verified with Stroud patch)
 
 # ---------------------------------------------------------------------------

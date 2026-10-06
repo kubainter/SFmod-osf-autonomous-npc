@@ -1,6 +1,6 @@
 import os, glob
 
-anim_dir = r'G:\Starfield\Data\SAF\Animations'
+anim_dir = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SAF\\Animations"
 
 # Categorize all root .glb files
 files = [f for f in os.listdir(anim_dir) if f.endswith('.glb')]

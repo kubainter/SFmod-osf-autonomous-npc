@@ -24,8 +24,8 @@ emergencies: `-SkipTests` (must be flagged to the user).
 Requirements: Python via `py` launcher + `pytest`
 (`py -m pip install -r tests/requirements-dev.txt`).
 
-Papyrus compile tests need the game toolchain at `G:\Starfield`
-(override via env var `STARFIELD_ROOT`). They are skipped automatically
+Papyrus compile tests need the game toolchain — set the `STARFIELD_ROOT`
+env var to your Starfield install dir. They are skipped automatically
 if `PapyrusCompiler.exe` or the flags file is missing.
 
 ## Coverage (minimum scope)
@@ -39,8 +39,8 @@ if `PapyrusCompiler.exe` or the flags file is missing.
 
 ## Known toolchain quirk
 
-`PapyrusCompiler.exe` is flaky when the target `.psc` sits under `G:\Starfield`
-(bogus `filename does not match script name` errors and rare .NET crashes).
+`PapyrusCompiler.exe` is flaky when the target `.psc` sits inside the game
+directory tree (bogus `filename does not match script name` errors and rare .NET crashes).
 Compiling a copy under `%TEMP%` is reliable — the test suite and
 `src/build_script_only.ps1` both do this and copy the resulting `.pex` into
 place. If you compile manually, prefer the same approach.

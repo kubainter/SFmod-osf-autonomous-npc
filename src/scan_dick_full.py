@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Pełny scan Dick.esm — wszystkie rekordy w GRUPach."""
 import struct
 import sys
@@ -6,7 +7,7 @@ import zlib
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-DICK = r'G:\Starfield\Data\Dick.esm'
+DICK = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\Dick.esm"
 
 with open(DICK, 'rb') as f:
     data = f.read()

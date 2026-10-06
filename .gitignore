@@ -30,3 +30,9 @@ staging/
 # Backups
 backups/
 *.bak
+
+# Local dev docs — kept in the working tree, never pushed to GitHub
+docs/anti_patterns.md
+docs/lessons_learned.md
+docs/papyrus_build.md
+docs/nexus_description.md

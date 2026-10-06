@@ -1,3 +1,4 @@
+import os
 """Verify solo_chair_touch.glb animation data"""
 import gzip, struct, json, math
 
@@ -27,7 +28,7 @@ def read_accessor(acc_idx, gltf, bin_data):
             result.append(list(struct.unpack_from('<4f', bin_data, offset + i*16)))
     return result, acc_type
 
-gltf, bin_data = parse_glb('G:/Starfield/Data/OSF/Autonomous/Animations/solo_chair_touch.glb')
+gltf, bin_data = parse_glb(os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_chair_touch.glb")
 nodes = gltf['nodes']
 anim = gltf['animations'][0]
 channels = anim['channels']

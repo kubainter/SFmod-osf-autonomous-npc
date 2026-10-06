@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Analiza Dick.esm — jakie stany/rozmiary definiuje i jak SnuSnuField.esm ich uzywa."""
 import struct
 import sys
@@ -6,8 +7,8 @@ import zlib
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-DICK = r'G:\Starfield\Data\Dick.esm'
-SNUSNU = r'G:\Starfield\Data\SnuSnuField.esm'
+DICK = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\Dick.esm"
+SNUSNU = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SnuSnuField.esm"
 
 HEADER_SIZE = 24
 GRUP_HEADER_SIZE = 24

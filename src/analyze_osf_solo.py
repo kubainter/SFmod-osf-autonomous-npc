@@ -1,6 +1,7 @@
+import os
 import json, glob, os
 
-osf_dir = r'G:\Starfield\Data\OSF'
+osf_dir = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF"
 
 # Find scenes with only 1 role (solo scenes)
 solo_scenes = []

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Check for NAVM records, and parse PKIN REFRs to find what furniture is placed in companion habs."""
 import struct
 import sys
@@ -158,7 +159,7 @@ def parse_all_records(filepath):
     return record_types_found, navm_count, all_pkin_refrs
 
 if __name__ == '__main__':
-    filepath = r"G:\Starfield\Data\stroudpremiumedition.esm"
+    filepath = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
     print(f"Analyzing: {filepath}\n")
 
     rec_types, navm_count, pkin_refrs = parse_all_records(filepath)

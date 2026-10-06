@@ -1,10 +1,14 @@
 # Compile + deploy the dev-only in-game E2E test harness.
 # Deploys to the GAME Data dir only - never into release/ (never ships).
 param(
-    [string]$GameRoot = "G:\Starfield"
+    [string]$GameRoot = $env:STARFIELD_ROOT
 )
 
 $ErrorActionPreference = "Stop"
+if (-not $GameRoot) {
+    Write-Host "ERROR: pass -GameRoot or set the STARFIELD_ROOT environment variable." -ForegroundColor Red
+    exit 1
+}
 
 $SrcFile     = "$PSScriptRoot\OSF_E2ETests.psc"
 $Compiler    = "$GameRoot\Tools\Papyrus Compiler\PapyrusCompiler.exe"

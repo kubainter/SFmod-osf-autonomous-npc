@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Parse PKIN records and their nested REFRs to find ownership on furniture in companion habs."""
 import struct
 import sys
@@ -167,7 +168,7 @@ def parse_esm_full(filepath):
     return pkin_records
 
 if __name__ == '__main__':
-    filepath = r"G:\Starfield\Data\stroudpremiumedition.esm"
+    filepath = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
     print(f"Parsing PKIN records with nested REFRs: {filepath}\n")
 
     pkins = parse_esm_full(filepath)

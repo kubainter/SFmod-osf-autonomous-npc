@@ -5,8 +5,8 @@ import json
 import os
 import struct
 
-ANIM_DIR = r"G:\Starfield\Data\SAF\Animations"
-OUT_PATH = r"G:\Starfield\src\OSFAutonomous\rest_pose.py"
+ANIM_DIR = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SAF\\Animations"
+OUT_PATH = os.environ.get("STARFIELD_ROOT", ".") + r"\\src\\OSFAutonomous\\rest_pose.py"
 POSE_FILES = {
     "standself01": "standself01.glb",
     "standself02": "standself02.glb",

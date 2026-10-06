@@ -1,3 +1,4 @@
+import os
 """Check timestamp values for 480-frame and 481-frame accessors"""
 import gzip, struct, json
 
@@ -19,7 +20,7 @@ def read_accessor_scalar(acc_idx, gltf, bin_data):
     return [struct.unpack_from('<f', bin_data, offset + i*4)[0] for i in range(count)]
 
 # Our base
-our_gltf, our_bin = parse_glb('G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb')
+our_gltf, our_bin = parse_glb(os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_standing_touch.glb")
 our_anim = our_gltf['animations'][0]
 our_samplers = our_anim['samplers']
 our_accessors = our_gltf['accessors']
@@ -44,7 +45,7 @@ for i, s in enumerate(our_samplers):
         break
 
 # GE donor
-ge_gltf, ge_bin = parse_glb('G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb')
+ge_gltf, ge_bin = parse_glb(os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb")
 ge_anim = ge_gltf['animations'][0]
 ge_samplers = ge_anim['samplers']
 ge_accessors = ge_gltf['accessors']

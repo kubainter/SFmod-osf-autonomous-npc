@@ -1051,10 +1051,14 @@ class TestSceneLifecycle:
             "IsBoundInstance does not compare the live instance to self"
         )
         assert re.search(
-            r"live\s*==\s*None[\s\S]*return\s+true", body_text, re.IGNORECASE
+            r"\w+\s*==\s*None[\s\S]*?return\s+true", body_text, re.IGNORECASE
         ), (
-            "missing 'live == None -> True' fallback — a variant with a "
+            "missing 'unresolved quest -> True' fallback — a variant with a "
             "different quest FormID would brick its own bound instance"
+        )
+        assert "managerQuestLookedUp" in body_text, (
+            "GetFormFromFile probe must be cached — IsBoundInstance runs "
+            "inside OnTimer and event handlers (no GetFormFromFile in hot loops)"
         )
 
     def test_dependency_state_reset_on_load(self):

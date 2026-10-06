@@ -1,6 +1,7 @@
+import os
 import gzip, struct, json, os, sys
 
-d = r'G:\Starfield\Data\OSF\Autonomous\Animations'
+d = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF\\Autonomous\\Animations"
 for f in sorted(os.listdir(d)):
     if not f.endswith('.glb'):
         continue

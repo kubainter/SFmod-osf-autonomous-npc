@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Parse PKIN/REFR records in StroudPremium ESM to find per-reference ownership (XOWN)."""
 import struct
 import sys
@@ -147,7 +148,7 @@ def parse_esm_pkin(filepath):
     return pkin_records, refr_with_ownership
 
 if __name__ == '__main__':
-    filepath = r"G:\Starfield\Data\stroudpremiumedition.esm"
+    filepath = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
     print(f"Parsing PKIN records from: {filepath}\n")
 
     pkins, refr_owns = parse_esm_pkin(filepath)

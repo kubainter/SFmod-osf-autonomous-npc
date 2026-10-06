@@ -1,6 +1,7 @@
+import os
 import json, os, glob
 
-osf_dir = r'G:\Starfield\Data\OSF'
+osf_dir = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF"
 all_tags = set()
 all_scene_ids = []
 all_packs = set()

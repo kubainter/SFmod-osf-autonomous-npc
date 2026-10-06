@@ -1,6 +1,7 @@
+import os
 import struct
 
-with open(r'G:\Starfield\Data\OSFAutonomous.esm', 'rb') as f:
+with open(os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSFAutonomous.esm", 'rb') as f:
     b = f.read()
 
 print(f'File size: {len(b)} bytes')

@@ -16,7 +16,7 @@ Devin (ta sesja)
 ```
 
 - Agy używa modeli Google Gemini — nie widzi modeli Devina ani OpenRoutera.
-- Agy działa w tym samym workspace (`G:\Starfield`), ale **nie widzi historii czatu Devina**.
+- Agy działa w tym samym workspace (katalog gry, `STARFIELD_ROOT`), ale **nie widzi historii czatu Devina**.
 - Kontekst agy jest trwały pod `conversation_id` — przeżywa restart MCP, restart Devina, nowe procesy agy.
 
 ---
@@ -50,13 +50,13 @@ Każdy prompt do agy musi być **self-contained** — agy nie widzi tej rozmowy.
 2. **Kontekst** — relevantne pliki, ścieżki, fragmenty kodu, logi.
 3. **Ograniczenia** — czy agy może edytować pliki, czy analysis-only.
 4. **Format odpowiedzi** — jak agy ma zwrócić wynik (lista, JSON, markdown).
-5. **Workspace** — `cwd` ustawione na `G:\Starfield` chyba że inne.
+5. **Workspace** — `cwd` ustawione na katalog gry (`STARFIELD_ROOT`) chyba że inne.
 
 ### Szablon promptu analysis-only
 
 ```text
 Zadanie: <opis>
-Workspace: G:\Starfield
+Workspace: <STARFIELD_ROOT>
 
 Pliki do przeanalizowania:
 - <ścieżka 1>
@@ -78,7 +78,7 @@ Format odpowiedzi:
 
 ```text
 Zadanie: <opis>
-Workspace: G:\Starfield
+Workspace: <STARFIELD_ROOT>
 
 Pliki do zmiany:
 - <ścieżka 1>
@@ -209,7 +209,7 @@ W `.devin/` istnieje skrypt `verify_agy_claims.py` — precedent weryfikacji twi
 
 ## 7. Kontekst workspace Starfield
 
-Agy działa w `G:\Starfield` ale **nie zna reguł projektu**. Każdy prompt powinien zawierać relevantne ograniczenia z `AGENTS.md`:
+Agy działa w workspace gry (`STARFIELD_ROOT`) ale **nie zna reguł projektu**. Każdy prompt powinien zawierać relevantne ograniczenia z `AGENTS.md`:
 
 ### Minimum dla promptów o Papyrus
 

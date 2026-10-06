@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 """Analiza XLKR (Linked Reference) i XLKT (Link Type) w 28 target REFR.
 Sprawdza czy linki blokuja uzycie furniture (beds).
 
@@ -17,8 +18,8 @@ from collections import defaultdict
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-SOURCE = r'G:\Starfield\Data\stroudpremiumedition.esm'
-STARFIELD = r'G:\Starfield\Data\Starfield.esm'
+SOURCE = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\stroudpremiumedition.esm"
+STARFIELD = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\Starfield.esm"
 
 target_refrs = {
     0xFD017809, 0xFD01257F, 0xFD01288E, 0xFD0129E4, 0xFD0178BE,

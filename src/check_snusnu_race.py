@@ -1,3 +1,4 @@
+import os
 import sys, struct, os
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
@@ -35,10 +36,10 @@ def parse_race(path):
     return None
 
 plugins = [
-    ('SnuSnuField.esm', r'G:\Starfield\Data\SnuSnuField.esm'),
-    ('Dick.esm', r'G:\Starfield\Data\Dick.esm'),
-    ('SFF Body Replacer.esm', r'G:\Starfield\Data\SFF Body Replacer.esm'),
-    ('Haters Body.esm', r'G:\Starfield\Data\Haters Body.esm'),
+    ('SnuSnuField.esm', os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SnuSnuField.esm"),
+    ('Dick.esm', os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\Dick.esm"),
+    ('SFF Body Replacer.esm', os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SFF Body Replacer.esm"),
+    ('Haters Body.esm', os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\Haters Body.esm"),
 ]
 
 print("=== HumanRace (0x347D) subrecords per plugin ===")
