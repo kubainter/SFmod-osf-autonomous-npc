@@ -1,22 +1,31 @@
 $ErrorActionPreference = "Stop"
-$ProjectDir = "G:\Starfield\src\OSFAutonomous"
-$ScriptSource = "$ProjectDir\OSF_AutonomousManagerScript.psc"
+# Source of truth: repo release dir. Compiling in-place inside the game dirs is
+# flaky (PapyrusCompiler reports bogus "filename does not match script name" /
+# crashes on G:\Starfield paths), so we compile a copy under %TEMP% and deploy.
+$ScriptSource = "$PSScriptRoot\..\release\Data\Scripts\Source\OSF_AutonomousManagerScript.psc"
 $PapyrusCompiler = "G:\Starfield\Tools\Papyrus Compiler\PapyrusCompiler.exe"
 $PapyrusSourceDir = "G:\Starfield\Data\Scripts\Source"
-$PapyrusOutputDir = "G:\Starfield\Data\Scripts"
+$ReleasePex = "$PSScriptRoot\..\release\Data\Scripts\OSF_AutonomousManagerScript.pex"
+$GamePex = "G:\Starfield\Data\Scripts\OSF_AutonomousManagerScript.pex"
 
-Copy-Item -Path $ScriptSource -Destination "$PapyrusSourceDir\OSF_AutonomousManagerScript.psc" -Force
+$work = Join-Path ([System.IO.Path]::GetTempPath()) ("osf_pbuild_" + [System.IO.Path]::GetRandomFileName())
+New-Item -ItemType Directory -Path "$work\out" -Force | Out-Null
+try {
+    Copy-Item -Path $ScriptSource -Destination "$work\OSF_AutonomousManagerScript.psc" -Force
+    Copy-Item -Path $ScriptSource -Destination "$PapyrusSourceDir\OSF_AutonomousManagerScript.psc" -Force
 
-$FlagsFile = "$PapyrusSourceDir\Base\Starfield_Papyrus_Flags.flg"
-$IncludePaths = "$PapyrusSourceDir;$PapyrusSourceDir\Base"
+    $FlagsFile = "$PapyrusSourceDir\Base\Starfield_Papyrus_Flags.flg"
+    $IncludePaths = "$PapyrusSourceDir;$PapyrusSourceDir\Base"
 
-& $PapyrusCompiler "$PapyrusSourceDir\OSF_AutonomousManagerScript.psc" -f="$FlagsFile" -o="$PapyrusOutputDir" -i="$IncludePaths"
+    & $PapyrusCompiler "$work\OSF_AutonomousManagerScript.psc" -f="$FlagsFile" -o="$work\out" -i="$IncludePaths"
+    if ($LASTEXITCODE -ne 0) { throw "PapyrusCompiler exit code $LASTEXITCODE" }
 
-$pex = "$PapyrusOutputDir\OSF_AutonomousManagerScript.pex"
-if (Test-Path $pex) {
-    $size = (Get-Item $pex).Length
-    Write-Host "OK: $size bytes" -ForegroundColor Green
-} else {
-    Write-Host "FAIL" -ForegroundColor Red
-    exit 1
+    $built = "$work\out\OSF_AutonomousManagerScript.pex"
+    if (-not (Test-Path $built)) { throw "compiler produced no .pex" }
+
+    Copy-Item $built $ReleasePex -Force
+    Copy-Item $built $GamePex -Force
+    Write-Host "OK: $((Get-Item $ReleasePex).Length) bytes -> release + game" -ForegroundColor Green
+} finally {
+    Remove-Item $work -Recurse -Force -ErrorAction SilentlyContinue
 }

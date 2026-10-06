@@ -104,7 +104,7 @@ Format odpowiedzi:
 ### Nowa konwersacja
 
 ```
-agy_run_sync({ "prompt": "...", "cwd": "G:\\Starfield" })
+agy_run_sync({ "prompt": "...", "cwd": "<game_root>" })
 → zwraca conversation_id
 ```
 
@@ -116,7 +116,7 @@ Zawsze **zapamiętaj zwrócony `conversation_id`** — to jest klucz do kontekst
 agy_run_sync({
   "prompt": "Biorąc pod uwagę poprzednią analizę, teraz...",
   "conversation_id": "<ID z poprzedniego wywołania>",
-  "cwd": "G:\\Starfield"
+  "cwd": "<game_root>"
 })
 ```
 
@@ -142,7 +142,7 @@ Używaj gdy:
 ```text
 agy_run_sync({
   "prompt": "...",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "90s"
 })
 ```
@@ -156,7 +156,7 @@ Używaj gdy:
 - Chcę pracować dalej podczas gdy agy myśli.
 
 ```text
-agy_run({ "prompt": "...", "cwd": "G:\\Starfield" })
+agy_run({ "prompt": "...", "cwd": "<game_root>" })
 → zwraca job_id + conversation_id
 
 # później:
@@ -310,7 +310,7 @@ agy_run_sync({
     - czy nie ma memory leak / script lag
     
     NIE edytuj plików. Zwróć listę znalezisk z priorytetami.",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "90s"
 })
 
@@ -320,7 +320,7 @@ agy_run_sync({
 agy_run_sync({
   "prompt": "Dla znaleziska #2 — czy to faktycznie problem? Sprawdź...",
   "conversation_id": "<ID z kroku 4>",
-  "cwd": "G:\\Starfield"
+  "cwd": "<game_root>"
 })
 # 7. Devin implementuje poprawki samodzielnie
 ```
@@ -347,7 +347,7 @@ agy_run_sync({
     
     Uwzględnij: Creation Engine Starfield, nie Skyrim/FO4.
     NIE edytuj plików.",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "60s"
 })
 

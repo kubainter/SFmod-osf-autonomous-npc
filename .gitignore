@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Build artifacts
+*.zip
+*.7z
+*.rar
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DESKTOP-*
+Desktop.ini
+.DS_Store
+
+# Build output
+zips/
+staging/
+
+# Backups
+backups/
+*.bak

@@ -5,7 +5,7 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 ## Repository Structure
 
 ```
-├── build_zip.ps1          # Release ZIP builder (run: powershell -File build_zip.ps1 -Version 1.0.4)
+├── build_zip.ps1          # Release ZIP builder (run: powershell -File build_zip.ps1 -Version 1.1.0)
 ├── sync_to_game.ps1       # Sync release/Data/ -> game Data/ (run after edits)
 ├── release/              # 1:1 copy of game Data/ — edit here, sync to game
 │   ├── Data/
