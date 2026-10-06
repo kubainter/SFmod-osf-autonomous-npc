@@ -1,20 +1,4 @@
 ScriptName OSF_E2ETests
-{Dev-only in-game E2E tests for OSF_AutonomousManagerScript.
- Lives in repo tests/papyrus/ - NEVER shipped in the release ZIP.
- Deploy:  tests/papyrus/deploy_e2e.ps1
- Run:     console -> cgf "OSF_E2ETests.RunAll"
-          (or:    bat osfe2e)
- Output:  Logs/Script/User/OSF_Autonomous.N.log  (lines tagged [E2E])
-
- SIDE EFFECTS: starts and stops REAL scenes through the production
- code path (TryStartScene). NPCs get real cooldowns, strip/equip gear,
- and furniture is used. Run at a private location (ship / outpost /
- home) with the mod enabled. Covers SF-TIK-010 (strapon equip on FF
- scenes) and SF-TIK-011 (concurrency pool cap demonstration).}
-
-; ---------------------------------------------------------------------------
-; Plumbing (all global - cgf can only invoke globals)
-; ---------------------------------------------------------------------------
 
 Function TLog(String asMsg) global
     Debug.OpenUserLog("OSF_Autonomous")
@@ -44,32 +28,23 @@ OSF_AutonomousManagerScript Function GetManager() global
     return mgr
 EndFunction
 
-; ---------------------------------------------------------------------------
-; Actor pool helpers
-; ---------------------------------------------------------------------------
-
 Actor Function SarahRef() global
-    return Game.GetFormFromFile(0x00005986, "Starfield.esm") as Actor  ; SarahMorganREF
+    return Game.GetFormFromFile(0x00005986, "Starfield.esm") as Actor
 EndFunction
 
 Actor Function AndrejaRef() global
-    return Game.GetFormFromFile(0x000059A9, "Starfield.esm") as Actor  ; andrejaRef
+    return Game.GetFormFromFile(0x000059A9, "Starfield.esm") as Actor
 EndFunction
 
 Keyword Function ActorTypeHumanKeyword() global
-    return Game.GetFormFromFile(0x0025E194, "Starfield.esm") as Keyword  ; ActorTypeNPC
+    return Game.GetFormFromFile(0x0025E194, "Starfield.esm") as Keyword
 EndFunction
 
-; Collects actors the autonomous scanner would see and runs them through the
-; REAL eligibility filter (IsActorEligible logs a reject reason per failure -
-; that output is part of the diagnostic). Mirrors the OnTimer candidate build:
-; companions + followers + generic humans (outpost scan) within scan range.
 Actor[] Function CollectEligibleActors(OSF_AutonomousManagerScript mgr) global
     Actor player = Game.GetPlayer()
     Actor[] pool = new Actor[0]
     float scanRange = mgr.GetMaxStartDistance() + 200.0
 
-    ; Named companions - always tried, logged for diagnostics
     Actor sarah = SarahRef()
     Actor andreja = AndrejaRef()
     if sarah != None && pool.Find(sarah) < 0
@@ -79,7 +54,6 @@ Actor[] Function CollectEligibleActors(OSF_AutonomousManagerScript mgr) global
         pool.Add(andreja, 1)
     endif
 
-    ; Active followers (multi-follower mods)
     Actor[] followers = Game.GetPlayerFollowers()
     if followers != None
         int i = 0
@@ -91,7 +65,6 @@ Actor[] Function CollectEligibleActors(OSF_AutonomousManagerScript mgr) global
         endwhile
     endif
 
-    ; Generic humans in scan range (outpost settlers, lodge residents)
     Keyword kHuman = ActorTypeHumanKeyword()
     if kHuman != None
         ObjectReference[] npcs = player.FindAllReferencesWithKeyword(kHuman, scanRange)
@@ -142,10 +115,6 @@ String Function ActorTag(Actor a) global
     return "0x" + a.GetFormID() + "(" + sexStr + ")"
 EndFunction
 
-; ---------------------------------------------------------------------------
-; Gear helpers (SF-TIK-010)
-; ---------------------------------------------------------------------------
-
 Form Function FormDick() global
     return Game.GetFormFromFile(0x00000800, "Dick.esm")
 EndFunction
@@ -155,7 +124,7 @@ Form Function FormDickFlaccid() global
 EndFunction
 
 Form Function FormDickErect() global
-    return Game.GetFormFromFile(0x0000081D, "Dick.esm")  ; the strapon used by equip strings
+    return Game.GetFormFromFile(0x0000081D, "Dick.esm")
 EndFunction
 
 Form Function FormDickErect2() global
@@ -167,7 +136,6 @@ Form Function FormHatersErection() global
 EndFunction
 
 String Function GearReport(Actor a) global
-    ; Which known gear forms are equipped on this actor right now
     string found = ""
     if FormDick() != None && a.IsEquipped(FormDick())
         found += " Dick.esm|0x800"
@@ -202,10 +170,6 @@ bool Function WaitForPlaying(Actor a, float afTimeout) global
     return false
 EndFunction
 
-; ---------------------------------------------------------------------------
-; E2E-1: FF scene -> role 'm' must get the strapon (SF-TIK-010)
-; ---------------------------------------------------------------------------
-
 Function TestStraponFF(int[] c) global
     TLog("--- E2E-1: strapon equip on FF scene (SF-TIK-010) ---")
     OSF_AutonomousManagerScript mgr = GetManager()
@@ -221,7 +185,6 @@ Function TestStraponFF(int[] c) global
 
     Actor[] eligible = CollectEligibleActors(mgr)
 
-    ; Pick two females - role 'm' in an FF pair receives equip.female = Dick.esm|0x81D
     Actor femA = None
     Actor femB = None
     int i = 0
@@ -246,10 +209,9 @@ Function TestStraponFF(int[] c) global
     Check("strapon-ff scene started", WaitForPlaying(femA, 30.0), c, "IsPlaying(A) false after 30s - check TryStartScene log above for the skip reason")
 
     if !OSF.IsPlaying(femA)
-        return  ; no scene - nothing more to check
+        return
     endif
 
-    ; Wait for the equip to land (actors walk to furniture + undress first)
     float waited = 0.0
     bool straponOn = false
     while waited < 45.0 && !straponOn
@@ -266,10 +228,9 @@ Function TestStraponFF(int[] c) global
     TLog("gear on B(role f): " + GearReport(femB))
     Check("strapon equipped (Dick.esm|0x81D on role m)", straponOn, c, "no DickErect on " + ActorTag(femA) + " after 45s - if OSF Animation.log shows no [E] equip error, the scene json may lack roles.m.equip.female")
 
-    ; Cleanup path: stop our scene, then verify stuck-gear removal works
     OSF.StopSceneForActor(femA)
     OSF.StopSceneForActor(femB)
-    Utility.Wait(6.0)  ; let OSF run its own restore first
+    Utility.Wait(6.0)
     mgr.UnequipStuckAttachments(femA)
     mgr.UnequipStuckAttachments(femB)
 
@@ -277,10 +238,6 @@ Function TestStraponFF(int[] c) global
     int leftover = femA.GetItemCount(FormDickErect()) + femB.GetItemCount(FormDickErect())
     Check("stuck-gear cleanup after scene", !stillEquipped && leftover == 0, c, "equipped=" + stillEquipped + " invCount=" + leftover + " - UnequipStuckAttachments should strip it")
 EndFunction
-
-; ---------------------------------------------------------------------------
-; E2E-2: concurrency cap is pool-driven, not chance-driven (SF-TIK-011)
-; ---------------------------------------------------------------------------
 
 Function TestConcurrency(int[] c) global
     TLog("--- E2E-2: concurrent scenes vs eligibility pool (SF-TIK-011) ---")
@@ -300,7 +257,6 @@ Function TestConcurrency(int[] c) global
         return
     endif
 
-    ; Pair 1: pick the two closest-to-each-other eligible actors (must be <=400u)
     Actor a1 = None
     Actor b1 = None
     float best = 99999.0
@@ -327,10 +283,9 @@ Function TestConcurrency(int[] c) global
     if !s1
         return
     endif
-    Utility.Wait(6.0)  ; let scene 1 register before pair 2 hits the spacing guard
+    Utility.Wait(6.0)
 
     if n < 4
-        ; Pool can't host a second pair - document the cap instead of failing
         TLog("INFO  pool=" + n + " -> second pair impossible (need 4 eligible). This is the single-scene root cause from SF-TIK-011.")
         Check("pool cap documented (1 scene, pool<4)", OSF.IsPlaying(a1) || OSF.IsPlaying(b1), c)
         OSF.StopSceneForActor(a1)
@@ -338,7 +293,6 @@ Function TestConcurrency(int[] c) global
         return
     endif
 
-    ; Pair 2: first disjoint pair that is NOT within spacing of scene 1 actors
     Actor a2 = None
     Actor b2 = None
     float minSpacing = mgr.GetMinSceneSpacing()
@@ -381,10 +335,6 @@ Function TestConcurrency(int[] c) global
     OSF.StopSceneForActor(b2)
 EndFunction
 
-; ---------------------------------------------------------------------------
-; E2E-3: settings echo + wiring (proves OSFSettings values reach the getters)
-; ---------------------------------------------------------------------------
-
 Function TestSettingsEcho(int[] c) global
     TLog("--- E2E-3: settings echo ---")
     OSF_AutonomousManagerScript mgr = GetManager()
@@ -401,10 +351,6 @@ Function TestSettingsEcho(int[] c) global
     Check("wire fMaxStartDistance", mgr.GetMaxStartDistance() == OSFSettings.GetFloat(mid, "fMaxStartDistance", 2000.0), c, "getter=" + mgr.GetMaxStartDistance())
     TLog("settings now: chance=" + mgr.GetChancePercent() + "% maxScenes=" + mgr.GetMaxConcurrent() + " spacing=" + mgr.GetMinSceneSpacing() + "u interval=" + mgr.GetCheckInterval() + "s pairCooldown=" + mgr.GetPairCooldownMinutes() + "min")
 EndFunction
-
-; ---------------------------------------------------------------------------
-; Entry points
-; ---------------------------------------------------------------------------
 
 Function RunAll() global
     int[] c = new int[2]
