@@ -14,6 +14,8 @@ Starfield mod — autonomous solo animations for NPC actors using the OSF framew
 
 ## Development
 
+See `docs/Scripts_API.md` for Papyrus script architectural notes and engine limitations.
+
 Animation files are built programmatically using Python scripts in `src/`.
 The builders read source GLB files, modify animation channels (quaternions,
 translations), and output compressed GLB files ready for the game.
@@ -29,4 +31,3 @@ respectively, using kinematic analysis from AGY (Google Gemini).
 ## License
 
 MIT License — see LICENSE file for details.
-\nSee `docs/Scripts_API.md` for script architectural notes and engine limitations.
