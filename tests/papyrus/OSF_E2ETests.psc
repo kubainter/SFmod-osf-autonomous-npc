@@ -115,6 +115,8 @@ String Function ActorTag(Actor a) global
     return "0x" + a.GetFormID() + "(" + sexStr + ")"
 EndFunction
 
+; Gear helpers (SF-TIK-010)
+
 Form Function FormDick() global
     return Game.GetFormFromFile(0x00000800, "Dick.esm")
 EndFunction
@@ -169,6 +171,8 @@ bool Function WaitForPlaying(Actor a, float afTimeout) global
     endwhile
     return false
 EndFunction
+
+; E2E-1: FF scene -> role 'm' must get the strapon (SF-TIK-010)
 
 Function TestStraponFF(int[] c) global
     TLog("--- E2E-1: strapon equip on FF scene (SF-TIK-010) ---")
@@ -238,6 +242,8 @@ Function TestStraponFF(int[] c) global
     int leftover = femA.GetItemCount(FormDickErect()) + femB.GetItemCount(FormDickErect())
     Check("stuck-gear cleanup after scene", !stillEquipped && leftover == 0, c, "equipped=" + stillEquipped + " invCount=" + leftover + " - UnequipStuckAttachments should strip it")
 EndFunction
+
+; E2E-2: concurrency cap is pool-driven, not chance-driven (SF-TIK-011)
 
 Function TestConcurrency(int[] c) global
     TLog("--- E2E-2: concurrent scenes vs eligibility pool (SF-TIK-011) ---")

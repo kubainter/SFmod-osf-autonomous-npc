@@ -29,3 +29,4 @@ respectively, using kinematic analysis from AGY (Google Gemini).
 ## License
 
 MIT License — see LICENSE file for details.
+\nSee `docs/Scripts_API.md` for script architectural notes and engine limitations.

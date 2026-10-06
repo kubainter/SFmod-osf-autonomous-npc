@@ -18,7 +18,7 @@ EndFunction
 int[] activeSceneHandles
 float[] sceneStartTimes
 int[] finaleTriggeredHandles
-Actor[] sceneActorA
+Actor[] sceneActorA             ; tracked participants (parallel to activeSceneHandles) — for ghost scene cleanup
 Actor[] sceneActorB
 Actor[] cooldownActors
 float[] cooldownEndTimes
@@ -55,11 +55,12 @@ Keyword kLocTypePlayerHouse
 
 Keyword kAnimFurnChair
 Keyword kAnimFurnBench
+; Removed (SF-TIK-007): AnimFurnSitTable / AnimFurnStool / AnimFurnBarStool /
 
 Keyword kPlanetAtmoO2
 Keyword kPlanetAtmoHighO2
 Keyword kPlanetAtmoLowO2
-ActorValue kAvHideHelmetBreathable
+ActorValue kAvHideHelmetBreathable ; ActorShouldHideSpacesuitHelmetCosmeticBreathable_AV — engine's own "breathable zone" signal
 
 Form kDickGear
 Form kDickFlaccidGear
@@ -255,7 +256,7 @@ EndFunction
 
 Function RegisterSettingsListener()
     if !IsBoundInstance()
-        return
+        return  ; ghost — RegisterForChanges requires a bound receiver anyway
     endif
     if OSFSettings.RegisterForChanges(self, MOD_ID)
         iSettingsRetryCount = 0
@@ -291,9 +292,13 @@ Function NotifyDependencyProblem(String asReason)
     OSFSettings.ReportIssue(MOD_ID, "dependency", asReason, true, "All autonomous scenes stopped", "Install/update OSF Settings (ships with OSF UI 2.0+) and reload")
 EndFunction
 
+; Saves can carry a stale "ghost" copy of this script — an instance detached
+; remote events serialized in the save, but every engine-facing call on it
+;    a ghost has no bound game object. Needs no FormID or plugin name, so a
+;    would ghost the foreign instance). When it doesn't resolve — variant
 bool Function IsBoundInstance()
     if !IsBoundGameObjectAvailable()
-        return false
+        return false  ; save-carried ghost — detached from any game object
     endif
     if !managerQuestLookedUp
         managerQuestLookedUp = true
@@ -394,6 +399,7 @@ Function OnSceneEvent(OSFTypes:SceneEvent akEvent)
             finaleTriggeredHandles = new int[0]
         endif
 
+        ; Capture tracked actors BEFORE removal — abort/ghost END events can
         Actor tA = None
         Actor tB = None
         if idx < sceneActorA.Length
@@ -445,6 +451,7 @@ Function OnSceneEvent(OSFTypes:SceneEvent akEvent)
             endif
             i += 1
         endwhile
+        ; Fallback for tracked actors not in the participants list (ghost ENDs)
         if tA != None && participants.Find(tA) < 0
             ApplyCooldownToActor(tA)
             cooldownCount += 1
@@ -465,7 +472,7 @@ EndFunction
 
 Function OnOSFSettingChanged(String asModId, String asKey)
     if !IsBoundInstance()
-        return
+        return  ; ghost — CancelTimer/EmergencyStopAll would fail unbound
     endif
     if asModId != MOD_ID
         return
@@ -538,6 +545,7 @@ Function SyncSceneTracking()
         sceneActorB.Remove(sceneActorB.Length - 1)
     endwhile
     float nowReal = Utility.GetCurrentRealTime()
+    ; a healthy scene, while ghost scenes are reaped by AuditActiveScenes via
     while sceneStartTimes.Length < n
         sceneStartTimes.Add(nowReal, 1)
     endwhile
@@ -557,6 +565,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
         return
     endif
 
+    ; clearing sceneActorA/B would orphan ghost cleanup: AuditActiveScenes
     if iInstalledVersion < CURRENT_VERSION
         Log("Script updated from v" + iInstalledVersion + " to v" + CURRENT_VERSION)
         iInstalledVersion = CURRENT_VERSION
@@ -580,6 +589,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
 
     RegisterSettingsListener()
 
+    ; player's own ship (SF-TIK-008).
     SpaceshipReference ship = Game.GetPlayer().GetCurrentShipRef()
     bIsOnShip = IsPlayerInOwnShip()
     if ship != None
@@ -605,6 +615,7 @@ Event Actor.OnLocationChange(Actor akSender, Location akOldLoc, Location akNewLo
         return
     endif
 
+    ; is fragile. Cell-derived check is self-healing (SF-TIK-008).
     bIsOnShip = IsPlayerInOwnShip()
 
     Cell playerCell = Game.GetPlayer().GetParentCell()
@@ -615,6 +626,7 @@ Event Actor.OnLocationChange(Actor akSender, Location akOldLoc, Location akNewLo
             EmergencyStopAll()
             Log("Location change — exterior, old scenes cleared")
         else
+            ; wrongly stopped; the per-tick audit purges real ghosts anyway.
             Log("Location change — allowed interior, scanning continues")
         endif
     else
@@ -661,6 +673,8 @@ Event Actor.OnEnterShipInterior(Actor akSender, ObjectReference akShip)
     if akSender != Game.GetPlayer()
         return
     endif
+    ; vessels — only flag when entering the player's own ship (SF-TIK-008).
+    ; engine's player-ship registry.
     SpaceshipReference enteredShip = akShip as SpaceshipReference
     bIsOnShip = (enteredShip != None && Game.IsPlayerSpaceshipOwner(enteredShip))
     SpaceshipReference currentShip = Game.GetPlayer().GetCurrentShipRef()
@@ -686,6 +700,7 @@ Event Actor.OnExitShipInterior(Actor akSender, ObjectReference akShip)
     if akSender != Game.GetPlayer()
         return
     endif
+    ; ownership must be checked against the engine registry (SF-TIK-008).
     SpaceshipReference exitedShip = akShip as SpaceshipReference
     if exitedShip != None && !Game.IsPlayerSpaceshipOwner(exitedShip)
         return
@@ -700,9 +715,11 @@ Event Actor.OnExitShipInterior(Actor akSender, ObjectReference akShip)
         EmergencyStopAll()
         Log("OnExitShipInterior — mode=ship, scenes cleared, scan idles")
     elseif isInExterior
+        ; Stop all scenes regardless of mode to prevent ghost scenes
         EmergencyStopAll()
         Log("OnExitShipInterior — exterior exit, ship scenes cleared")
     else
+        ; mid-load and would be wrongly stopped); per-tick audit purges ghosts.
         if !IsLocationAllowed()
             EmergencyStopAll()
             Log("OnExitShipInterior — interior transition, location not allowed, scenes cleared")
@@ -932,6 +949,7 @@ Event OnTimer(int aiTimerID)
     endwhile
 
     if IsIncludeOutpostNPC() && kActorTypeHuman != None
+        ; in bars/clubs or in public city interiors (SF-TIK-008).
         bool allowGenericScan = IsInPrivatePlayerLocation()
         if allowGenericScan
             ObjectReference[] nearbyNPCs = player.FindAllReferencesWithKeyword(kActorTypeHuman, scanRange)
@@ -1174,6 +1192,7 @@ bool Function IsActorEligible(Actor akActor)
 
     int relRank = akActor.GetRelationshipRank(Game.GetPlayer())
 
+    ; human scan (SF-TIK-008).
     bool hasCrewKeyword = (kCrewCompanion != None && akActor.HasKeyword(kCrewCompanion)) || (kCrewGeneric != None && akActor.HasKeyword(kCrewGeneric)) || (kCrewElite != None && akActor.HasKeyword(kCrewElite))
     if !hasCrewKeyword && !akActor.IsPlayerTeammate() && !(kCurrentCrewFaction != None && akActor.IsInFaction(kCurrentCrewFaction))
         if !IsInPrivatePlayerLocation()
@@ -1505,6 +1524,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
             opts.StripMode = OSF.OFF()
         endif
 
+        ; (SF-TIK-007).
         int matchedTier = 0
         if actionTag != ""
             if IsPreferSequences()
@@ -1637,6 +1657,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
                 endif
             endif
         endif
+        ; "floor"), furniture packs expose "*.standing" variants (SF-TIK-007).
         if handle <= 0
             opts.StripMode = GetStripMode()
             if IsPreferSequences()
@@ -1707,6 +1728,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
                 Log("FF pair using MF standing scene")
             endif
         endif
+        ; (SF-TIK-007).
         if handle > 0
             activeSceneHandles.Add(handle, 1)
             sceneStartTimes.Add(Utility.GetCurrentRealTime(), 1)
@@ -1801,6 +1823,7 @@ Function TryStartSoloScene(Actor[] eligible)
         sceneStartTimes.Add(Utility.GetCurrentRealTime(), 1)
         sceneActorA.Add(soloActor, 1)
         sceneActorB.Add(None, 1)
+        ; running and gets a real cooldown via ApplyCooldownToActor on END/ghost
         StartSceneTimeoutTimer()
         Log("Solo scene started — handle=" + handle + " actor=" + soloActor)
     else
@@ -1813,6 +1836,7 @@ ObjectReference[] Function FindNearbyFurniture(Actor akActor, float afRadius)
     float maxZ = GetMaxZOffset()
     float actorZ = akActor.GetPositionZ()
 
+    ; queries in dense interiors like Astral Lounge (SF-TIK-007).
     Keyword[] keywords = new Keyword[3]
     keywords[0] = kIsSleepFurniture
     keywords[1] = kAnimFurnChair
@@ -1876,6 +1900,7 @@ Function EmergencyStopAll()
     int i = 0
     while i < handlesToStop.Length
         if handlesToStop[i] > 0
+            ; Tracked actors first (covers ghost scenes with empty participants);
             if i < trackedA.Length && trackedA[i] != None
                 ApplyCooldownToActor(trackedA[i])
             endif
@@ -1929,6 +1954,7 @@ Function AuditActiveScenes()
                 if i < sceneStartTimes.Length
                     ghostDur = Utility.GetCurrentRealTime() - sceneStartTimes[i]
                 endif
+                ; for ghosts, so cooldown/anchor/gear teardown goes via tracking
                 if i < sceneActorA.Length && sceneActorA[i] != None
                     ApplyCooldownToActor(sceneActorA[i])
                 endif
@@ -2025,6 +2051,7 @@ Function AuditActiveScenes()
                         endif
                         pi += 1
                     endwhile
+                    ; Tracked-actor fallback — covers ghost scenes where the
                     if tA != None && stopParticipants.Find(tA) < 0
                         ApplyCooldownToActor(tA)
                     endif
@@ -2105,6 +2132,7 @@ Function EnforceSceneTimeouts()
 
                 OSF.StopScene(handle)
 
+                ; Apply cooldowns for real participants (ghost scenes return empty array)
                 int pi = 0
                 while pi < participants.Length
                     Actor p = participants[pi]
@@ -2113,6 +2141,7 @@ Function EnforceSceneTimeouts()
                     endif
                     pi += 1
                 endwhile
+                ; Tracked-actor fallback — ghost scenes return empty participants,
                 if tA != None && participants.Find(tA) < 0
                     ApplyCooldownToActor(tA)
                 endif
@@ -2195,6 +2224,7 @@ Function ResumeScanTimer()
     endif
 EndFunction
 
+; Ownership must come from the engine's player-ship registry (SF-TIK-008).
 bool Function IsPlayerInOwnShip()
     Actor player = Game.GetPlayer()
     Cell playerCell = player.GetParentCell()
@@ -2235,6 +2265,7 @@ bool Function IsBreathableEnvironment()
         Log("Environment blocked — space exterior (vacuum)")
         return false
     endif
+    ; seamless structures are exterior cells by engine design. The engine
     if kAvHideHelmetBreathable != None && player.GetValue(kAvHideHelmetBreathable) > 0.0
         return true
     endif
@@ -2263,10 +2294,12 @@ bool Function IsLocationAllowed()
     if mode == "everywhere"
         return true
     endif
+    ; bIsOnShip stale across station/docked transitions (SF-TIK-008).
     if IsPlayerInOwnShip()
         return true
     endif
     if mode == "interiors"
+        ; public interiors like starstations, bars or clubs (SF-TIK-008).
         bool priv = IsInPrivatePlayerLocation()
         if !priv
             Log("Location denied — mode=" + mode + " but not a private location; bIsOnShip=" + bIsOnShip + " loc=" + Game.GetPlayer().GetCurrentLocation() + " cell=" + Game.GetPlayer().GetParentCell())
