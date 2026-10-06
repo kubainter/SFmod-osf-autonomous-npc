@@ -1,4 +1,12 @@
 ScriptName OSF_E2ETests
+{
+Dev-only in-game E2E tests for OSF_AutonomousManagerScript.
+ Lives in repo tests/papyrus/ - NEVER shipped in the release ZIP.
+ Deploy:  tests/papyrus/deploy_e2e.ps1
+ Run:     console -> cgf "OSF_E2ETests.RunAll"
+          (or:    bat osfe2e)
+ Output:  Logs/Script/User/OSF_Autonomous.N.log  (lines tagged [E2E])
+}
 
 Function TLog(String asMsg) global
     Debug.OpenUserLog("OSF_Autonomous")

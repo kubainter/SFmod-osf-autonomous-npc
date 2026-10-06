@@ -1,4 +1,12 @@
 ScriptName OSF_SelfTests
+{
+Dev-only in-game self-test harness for OSF_AutonomousManagerScript.
+ Lives in repo tests/papyrus/ - NEVER shipped in the release ZIP.
+ Deploy:  tests/papyrus/deploy_selftest.ps1
+ Run:     console -> cgf "OSF_SelfTests.RunAll"
+          (or:    bat osfselftest)
+ Output:  Logs/Script/User/OSF_Autonomous.log  (lines tagged [SELFTEST])
+}
 
 Function TLog(String asMsg) global
     Debug.OpenUserLog("OSF_Autonomous")
