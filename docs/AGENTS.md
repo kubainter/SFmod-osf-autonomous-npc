@@ -28,7 +28,7 @@ Condensed instructions and a hard rulebook for all operations on this Starfield 
   - `release/fomod/` — FOMOD installer config
   - `release/README.txt`, `release/CHANGELOG.md` — distribution docs
 - `src/` — build tooling, Python scripts, source manifests
-- `docs/` — project documentation
+- `docs/` — project documentation (`SCRIPT_MAP.md` = architecture map of the manager script — read before analyzing the .psc)
 - `tests/` — pytest suite + Papyrus self-test/E2E harness
 - `build_zip.ps1` — builds ZIP from `release/` (excludes `.psc`)
 - `sync_to_game.ps1` — copies `release/Data/` into the game directory (`-GameData` required)
@@ -260,6 +260,7 @@ To prove you performed the mandatory audit, every final answer closing a task de
 │   ├── agy_cooperation.md                 # AGY collaboration protocol
 │   ├── agy_*.md                           # AGY kinematic analyses
 │   ├── TESTING.md                         # Test guide
+│   ├── SCRIPT_MAP.md                      # Manager script architecture map — read before analyzing the .psc
 │   └── TODO*.md                           # Task lists
 ├── tests/                 # pytest suite + Papyrus selftest/e2e harness
 ├── .gitignore
