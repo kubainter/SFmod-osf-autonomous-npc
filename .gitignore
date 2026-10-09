@@ -36,3 +36,12 @@ docs/anti_patterns.md
 docs/lessons_learned.md
 docs/papyrus_build.md
 docs/nexus_description.md
+
+# Internal dev tooling & docs — local only, never pushed
+src/
+sync_to_game.ps1
+docs/AGENTS.md
+docs/directory_map.md
+docs/agy_cooperation.md
+docs/TODO*.md
+docs/agy_*.md
