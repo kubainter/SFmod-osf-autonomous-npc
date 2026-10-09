@@ -1,0 +1,6 @@
+; OSF Autonomous - in-game E2E test batch
+; Usage: console -> bat osfe2e
+; Individual tests:  cgf "OSF_E2ETests.GearOnly"
+;                    cgf "OSF_E2ETests.ConcurrencyOnly"
+;                    cgf "OSF_E2ETests.DumpPool"
+cgf "OSF_E2ETests.RunAll"

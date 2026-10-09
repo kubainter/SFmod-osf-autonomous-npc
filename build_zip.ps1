@@ -1,5 +1,6 @@
 param(
-    [string]$Version = "1.0.4"
+    [string]$Version = "1.2.0",
+    [switch]$SkipTests
 )
 
 $ErrorActionPreference = 'Stop'
@@ -15,6 +16,27 @@ $zipPath      = Join-Path $zipsDir $zipName
 $stagingDir   = Join-Path $projectDir 'staging'
 
 # ---------------------------------------------------------------------------
+# Test gate — the suite must be green before packaging a release.
+# Bypass only for emergencies: build_zip.ps1 -Version X.Y.Z -SkipTests
+# ---------------------------------------------------------------------------
+if (-not $SkipTests) {
+    Write-Host "Running test gate (pytest)..." -ForegroundColor Cyan
+    Push-Location $projectDir
+    try {
+        py -m pytest tests -x -q
+        $testCode = $LASTEXITCODE
+    } finally {
+        Pop-Location
+    }
+    if ($testCode -ne 0) {
+        Write-Host "`nERROR: test suite failed - refusing to build release." -ForegroundColor Red
+        Write-Host "Fix the failures first, or bypass explicitly with -SkipTests." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "Test gate: green.`n" -ForegroundColor Green
+}
+
+# ---------------------------------------------------------------------------
 # Distributable files — everything in repo_upload/release/
 # This must NOT contain:
 #   - .psc source files (those live in src/)
@@ -25,7 +47,7 @@ $distributable = @(
     'Data',
     'fomod',
     'README.txt',
-    'CHANGELOG.txt'
+    'CHANGELOG.md'
 )
 
 # ---------------------------------------------------------------------------
@@ -97,6 +119,15 @@ if ($pscFiles) {
     $pscFiles | Remove-Item -Force
 }
 
+# Remove empty directories left behind in staging (e.g. Scripts/Source after .psc strip)
+$emptyDirs = Get-ChildItem $stagingDir -Recurse -Directory |
+    Where-Object { -not (Get-ChildItem $_.FullName -Recurse -File -Force -ErrorAction SilentlyContinue) } |
+    Sort-Object { $_.FullName.Length } -Descending
+foreach ($dir in $emptyDirs) {
+    Write-Host "  Removing empty dir: $($dir.FullName.Replace($stagingDir, ''))" -ForegroundColor Yellow
+    Remove-Item $dir.FullName -Recurse -Force
+}
+
 if (-not $allOk) {
     Write-Host "`nERROR: Critical files missing from staging. Aborting." -ForegroundColor Red
     exit 1
@@ -120,7 +151,41 @@ if (Test-Path $zipPath) {
 # Create zip
 # ---------------------------------------------------------------------------
 Write-Host "`nPackaging -> $zipPath..." -ForegroundColor Cyan
-Compress-Archive -Path (Join-Path $stagingDir '*') -DestinationPath $zipPath -Force
+
+# Path to 7-Zip executable: PATH first, then the default install location
+$7zExe = (Get-Command 7z.exe -ErrorAction SilentlyContinue).Source
+if (-not $7zExe) { $7zExe = "$env:ProgramFiles\7-Zip\7z.exe" }
+
+if (Test-Path $7zExe) {
+    Write-Host "Using 7-Zip for compression to preserve correct folder structure for MO2/Vortex..." -ForegroundColor Cyan
+    # a: add, -tzip: zip archive format, -mx=5: normal compression, -r: recurse
+    $7zArgs = @(
+        "a", 
+        "-tzip", 
+        "-mx=5", 
+        "`"$zipPath`"", 
+        "`"$stagingDir\*`""
+    )
+    $process = Start-Process -FilePath $7zExe -ArgumentList $7zArgs -Wait -NoNewWindow -PassThru
+    
+    if ($process.ExitCode -ne 0) {
+        Write-Host "ERROR: 7-Zip failed with exit code $($process.ExitCode). Aborting." -ForegroundColor Red
+        exit 1
+    }
+} else {
+    Write-Host "WARNING: 7-Zip not found at $7zExe. Falling back to native Windows tar.exe..." -ForegroundColor Yellow
+    # Windows 10/11 native tar.exe produces spec-compliant zip files with forward slashes (/)
+    # We must Push-Location into the staging dir and use * instead of -C staging . 
+    # to prevent tar from prepending './' to all paths, which breaks MO2/FOMOD.
+    Push-Location -Path $stagingDir
+    $tarArgs = @("-a", "-c", "-f", "`"$zipPath`"", "*")
+    $process = Start-Process -FilePath "tar.exe" -ArgumentList $tarArgs -Wait -NoNewWindow -PassThru
+    Pop-Location
+    if ($process.ExitCode -ne 0) {
+        Write-Host "ERROR: tar.exe failed with exit code $($process.ExitCode). Aborting." -ForegroundColor Red
+        exit 1
+    }
+}
 
 # ---------------------------------------------------------------------------
 # Cleanup staging

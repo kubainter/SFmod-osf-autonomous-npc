@@ -1,5 +1,5 @@
 OSF Autonomous NPC Interactions
-v1.0.4 — Spaceflight Critical Hotfix
+v1.2.0 - Location Gating & Lifecycle Hardening
 Author: Botan
 
 Includes one custom solo self-touch animation with audio. Paired scenes are
@@ -14,7 +14,9 @@ REQUIREMENTS (ALL HARD — mod will not load without every one)
 
   1. SFSE (Starfield Script Extender) — launch via sfse_loader.exe
   2. OSF Animation - Native Scene Framework — native animation engine (SFSE DLL)
-  3. OSFUI — settings system + F10 in-game menu (script will not bind without it)
+  3. OSFUI 2.0+ — settings system + F10 in-game menu. Version 2.0 moved
+     settings to the OSFSettings plugin (OSFSettings.dll/.pex); this mod will
+     not read any setting and stays disabled on OSF UI 1.x.
 
 Recommended animation packs (mod works with any OSF pack):
   - GE Animation Pack — 388+ MF scenes with furniture (primary source)
@@ -49,7 +51,7 @@ Load order: Place after any OSF animation pack ESMs.
   Example: *SnuSnuField.esm -> *OSFAutonomous.esm
 
 ================================================================================
-DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
+DEFAULT SETTINGS (27 in-game settings — change via F10 menu)
 ================================================================================
 
 [General]
@@ -63,6 +65,9 @@ DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
   iMaxConcurrentScenes = 2        Max concurrent scenes (slider: 1 to 4)
   fActorCooldownMinutes= 10.0     Minutes before same actor can participate again
   fMinSceneSpacing     = 500.0    Min distance between scenes (~7m) to avoid overlap
+  fCheckInterval       = 45.0     Seconds between scan cycles (15 to 300)
+  fSceneTimeoutMinutes = 3.0      Safety stop for scenes stuck too long
+  fPairCooldownMinutes = 30.0     Minutes before the same pair can repeat
 
 [Scene Options]
   bRequireFurniture    = true     Only start scenes at beds/couches
@@ -73,15 +78,16 @@ DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
   bAllowClassic        = true     Include missionary, cowgirl, spoon tags
   bAllowIntense        = true     Include doggy, reversecowgirl, riding tags
   sSpeedMode           = "static" "static", "dynamic" (accelerating), "random"
+  fMaxStartDistance    = 2000.0   Max distance actors can be from you at start
+  fMaxZOffset          = 200.0    Max vertical offset between pair (0 = off)
 
 [Romance & Solo]
   bRomanceExclusivity  = true     Romanced companions (rank >= 3) excluded
   bStopOnPlayerWalkIn  = false    Interrupt scene if player walks into the room
   bSoloDowntime        = true     Solo downtime when no pairs are available
   fSoloChance          = 20.0     Chance % for solo scene during scan cycle
-
-Note: Advanced engine values (scan interval: 45s, scene timeout: 3m, max start
-  distance: 2000 units) are internally fixed in v1.0.x for optimal performance.
+  bSoloPrivateOnly     = true     Solo scenes only in private locations
+  fWalkInDistance      = 150.0    Distance that counts as "walking in"
 
 ================================================================================
 WHO DOES THIS MOD AFFECT?
@@ -101,7 +107,9 @@ TROUBLESHOOTING
 ================================================================================
 
 Mod doesn't start? Verify ALL hard requirements installed (SFSE, OSF
-  Animation, OSFUI). Check SFSE logs for binding errors.
+  Animation, OSFUI 2.0+). Check SFSE logs for binding errors. On OSF UI 1.x
+  the user log (Logs/Script/User/OSF_Autonomous.log) shows
+  "OSFSettings.RegisterForChanges failed" — update OSF UI to 2.0+.
 
 No scenes? Verify OSF Animation.dll is loaded (check SFSE logs for
   "OSF not ready" messages). Try sLocationMode="everywhere". Set
@@ -133,5 +141,5 @@ SFSE Team (ianpatt, behippo, scripthoge) — Starfield Script Extender
 GE Animation Pack authors — 388+ furniture-supported scenes
 SnuSnu Field author — femdom content and strapon support
 
-This is a v1.0.1 bugfix release. Bug reports and feedback welcome
+This is a v1.2.0 release. Bug reports and feedback welcome
 on the Nexus mod page.
