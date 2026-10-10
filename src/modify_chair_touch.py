@@ -1,3 +1,4 @@
+import os
 """
 modify_chair_touch.py — Build solo_chair_touch.glb
 
@@ -17,11 +18,11 @@ import gzip, struct, json, math, os, copy
 # ============================================================================
 # SOURCE FILES
 # ============================================================================
-OUR_BASE = 'G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb'
-GE_DONOR = 'G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb'
-DST_DIR = 'G:/Starfield/Data/OSF/Autonomous/Animations'
+OUR_BASE = os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_standing_touch.glb"
+GE_DONOR = os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb"
+DST_DIR = os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations"
 DST = os.path.join(DST_DIR, 'solo_chair_touch.glb')
-DST_REF = 'G:/Starfield/StarfieldDev/animation_references/blender_edit/solo_chair_touch.glb'
+DST_REF = os.environ.get("STARFIELD_ROOT", ".") + "/StarfieldDev/animation_references/blender_edit/solo_chair_touch.glb"
 
 os.makedirs(DST_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(DST_REF), exist_ok=True)

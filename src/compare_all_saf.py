@@ -1,9 +1,10 @@
+import os
 """
 Compare all SAF solo and paired animations to find patterns for solo animation improvement.
 """
 import gzip, struct, json, math, os
 
-ANIM_DIR = 'G:/Starfield/Data/SAF/Animations'
+ANIM_DIR = os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations"
 
 SOLO_FILES = [
     'standself01.glb', 'standself02.glb', 'standself03.glb',

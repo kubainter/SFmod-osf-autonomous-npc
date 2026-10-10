@@ -1,3 +1,4 @@
+import os
 import gzip, struct, json, os
 
 def read_glb_json(path):
@@ -12,8 +13,8 @@ def read_glb_json(path):
     json_bytes = data[20:20+chunk0_len]
     return json.loads(json_bytes.rstrip(b'\x00').rstrip().decode('utf-8'))
 
-orig = read_glb_json(r'G:\Starfield\Data\SAF\Animations\standself01.glb')
-ours = read_glb_json(r'G:\Starfield\Data\OSF\Autonomous\Animations\solo_idle_breathe01.glb')
+orig = read_glb_json(os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SAF\\Animations\\standself01.glb")
+ours = read_glb_json(os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF\\Autonomous\\Animations\\solo_idle_breathe01.glb")
 
 print("=== ORIGINAL NODES (first 15) ===")
 for i, n in enumerate(orig['nodes'][:15]):

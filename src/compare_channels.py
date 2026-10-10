@@ -1,3 +1,4 @@
+import os
 import gzip, struct, json, os, math, sys
 
 def read_glb(path):
@@ -32,8 +33,8 @@ def read_accessor(acc, bin_data, gltf):
         vals.append(struct.unpack(f'<{comps}f', raw))
     return vals
 
-orig_path = sys.argv[1] if len(sys.argv) > 1 else r'G:\Starfield\Data\SAF\Animations\standself01.glb'
-ours_path = sys.argv[2] if len(sys.argv) > 2 else r'G:\Starfield\Data\OSF\Autonomous\Animations\solo_standing_touch.glb'
+orig_path = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\SAF\\Animations\\standself01.glb"
+ours_path = sys.argv[2] if len(sys.argv) > 2 else os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF\\Autonomous\\Animations\\solo_standing_touch.glb"
 orig_gltf, orig_bin = read_glb(orig_path)
 ours_gltf, ours_bin = read_glb(ours_path)
 

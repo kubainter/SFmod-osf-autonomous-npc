@@ -4,7 +4,12 @@
 
 $ErrorActionPreference = "Stop"
 
-$EsmPath = "G:\Starfield\Data\OSFAutonomous.esm"
+$GameRoot = $env:STARFIELD_ROOT
+if (-not $GameRoot) {
+    Write-Host "ERROR: set the STARFIELD_ROOT environment variable to your Starfield install directory." -ForegroundColor Red
+    exit 1
+}
+$EsmPath = "$GameRoot\Data\OSFAutonomous.esm"
 $RecordVersion = [uint16]0x0246   # Starfield record version (verified with Stroud patch)
 
 # ---------------------------------------------------------------------------
@@ -59,16 +64,17 @@ function Write-LPString([string]$s) {
 # TES4 Header
 # ---------------------------------------------------------------------------
 
-# HEDR: version 0.96 (Starfield standard), record count 1, flags 0x00000801
+# HEDR: version 0.96 (Starfield standard), record count, flags 0x00000801
 # All working Starfield plugins use HEDR version 0.96, NOT 1.0 (which is Skyrim/FO4)
+# numRecords=2 matches the shipped v1.1.x artifact (TES4 header + QUST counted)
 $hedrData = [System.BitConverter]::GetBytes([float]0.96) `
-          + [System.BitConverter]::GetBytes([uint32]1) `
+          + [System.BitConverter]::GetBytes([uint32]2) `
           + [System.BitConverter]::GetBytes([uint32]0x00000801)
 $hedrData = [byte[]]$hedrData
 $subHedr = New-SubrecordBytes "HEDR" $hedrData
 
-# CNAM: plugin name (null-terminated)
-$cnamBytes = [System.Text.Encoding]::ASCII.GetBytes("OSFAutonomous`0")
+# CNAM: plugin name (null-terminated) — matches shipped artifact
+$cnamBytes = [System.Text.Encoding]::ASCII.GetBytes("OSFAutonomous by Botan`0")
 $subCnam = New-SubrecordBytes "CNAM" $cnamBytes
 
 # MAST: Starfield.esm (only master needed)
@@ -85,9 +91,13 @@ $subIncc = New-SubrecordBytes "INCC" ([System.BitConverter]::GetBytes([uint32]0)
 # Assemble TES4 subrecords
 $tes4Subrecords = Concat-Bytes (Concat-Bytes (Concat-Bytes (Concat-Bytes $subHedr $subCnam) $subMaster) $subBnam) $subIncc
 
-# TES4 record: flags 0x00000001 (ESM only), FormID 0
-# Do NOT use 0x00000101 — bit 0x100 is not valid for Starfield ESM files
-$tes4Record = New-Record "TES4" 0x00000001 0 $tes4Subrecords
+# TES4 record: flags 0x00000101 (ESM 0x1 + Small/Light Master 0x100), FormID 0
+# Small Master loads into the FE slot — saves a full master load-order slot.
+# The QUST record index 0x801 fits in the 12-bit small-master range, so its
+# runtime FormID becomes FExxx801; the file-local ID 0x01000801 is unchanged.
+# NOTE: in Starfield the light/small flag is 0x100 — 0x200 was the light flag
+# in Skyrim/FO4 but is the Update-plugin flag in Starfield; 0x400 = Medium (FD slot).
+$tes4Record = New-Record "TES4" 0x00000101 0 $tes4Subrecords
 
 # ---------------------------------------------------------------------------
 # QUST Record

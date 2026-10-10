@@ -1,3 +1,4 @@
+import os
 """Check frame counts across ALL samplers in both GLBs"""
 import gzip, struct, json
 
@@ -77,11 +78,11 @@ def check_all_samplers(path, label):
     return max(counts)
 
 our_max = check_all_samplers(
-    'G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb',
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_standing_touch.glb",
     'OUR BASE: solo_standing_touch.glb'
 )
 ge_max = check_all_samplers(
-    'G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb',
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb",
     'GE DONOR: Blowjob07-ChairOffice-1.glb'
 )
 

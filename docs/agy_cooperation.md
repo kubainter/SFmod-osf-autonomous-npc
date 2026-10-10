@@ -16,7 +16,7 @@ Devin (ta sesja)
 ```
 
 - Agy używa modeli Google Gemini — nie widzi modeli Devina ani OpenRoutera.
-- Agy działa w tym samym workspace (`G:\Starfield`), ale **nie widzi historii czatu Devina**.
+- Agy działa w tym samym workspace (katalog gry, `STARFIELD_ROOT`), ale **nie widzi historii czatu Devina**.
 - Kontekst agy jest trwały pod `conversation_id` — przeżywa restart MCP, restart Devina, nowe procesy agy.
 
 ---
@@ -50,13 +50,13 @@ Każdy prompt do agy musi być **self-contained** — agy nie widzi tej rozmowy.
 2. **Kontekst** — relevantne pliki, ścieżki, fragmenty kodu, logi.
 3. **Ograniczenia** — czy agy może edytować pliki, czy analysis-only.
 4. **Format odpowiedzi** — jak agy ma zwrócić wynik (lista, JSON, markdown).
-5. **Workspace** — `cwd` ustawione na `G:\Starfield` chyba że inne.
+5. **Workspace** — `cwd` ustawione na katalog gry (`STARFIELD_ROOT`) chyba że inne.
 
 ### Szablon promptu analysis-only
 
 ```text
 Zadanie: <opis>
-Workspace: G:\Starfield
+Workspace: <STARFIELD_ROOT>
 
 Pliki do przeanalizowania:
 - <ścieżka 1>
@@ -78,7 +78,7 @@ Format odpowiedzi:
 
 ```text
 Zadanie: <opis>
-Workspace: G:\Starfield
+Workspace: <STARFIELD_ROOT>
 
 Pliki do zmiany:
 - <ścieżka 1>
@@ -104,7 +104,7 @@ Format odpowiedzi:
 ### Nowa konwersacja
 
 ```
-agy_run_sync({ "prompt": "...", "cwd": "G:\\Starfield" })
+agy_run_sync({ "prompt": "...", "cwd": "<game_root>" })
 → zwraca conversation_id
 ```
 
@@ -116,7 +116,7 @@ Zawsze **zapamiętaj zwrócony `conversation_id`** — to jest klucz do kontekst
 agy_run_sync({
   "prompt": "Biorąc pod uwagę poprzednią analizę, teraz...",
   "conversation_id": "<ID z poprzedniego wywołania>",
-  "cwd": "G:\\Starfield"
+  "cwd": "<game_root>"
 })
 ```
 
@@ -142,7 +142,7 @@ Używaj gdy:
 ```text
 agy_run_sync({
   "prompt": "...",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "90s"
 })
 ```
@@ -156,7 +156,7 @@ Używaj gdy:
 - Chcę pracować dalej podczas gdy agy myśli.
 
 ```text
-agy_run({ "prompt": "...", "cwd": "G:\\Starfield" })
+agy_run({ "prompt": "...", "cwd": "<game_root>" })
 → zwraca job_id + conversation_id
 
 # później:
@@ -209,7 +209,7 @@ W `.devin/` istnieje skrypt `verify_agy_claims.py` — precedent weryfikacji twi
 
 ## 7. Kontekst workspace Starfield
 
-Agy działa w `G:\Starfield` ale **nie zna reguł projektu**. Każdy prompt powinien zawierać relevantne ograniczenia z `AGENTS.md`:
+Agy działa w workspace gry (`STARFIELD_ROOT`) ale **nie zna reguł projektu**. Każdy prompt powinien zawierać relevantne ograniczenia z `AGENTS.md`:
 
 ### Minimum dla promptów o Papyrus
 
@@ -310,7 +310,7 @@ agy_run_sync({
     - czy nie ma memory leak / script lag
     
     NIE edytuj plików. Zwróć listę znalezisk z priorytetami.",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "90s"
 })
 
@@ -320,7 +320,7 @@ agy_run_sync({
 agy_run_sync({
   "prompt": "Dla znaleziska #2 — czy to faktycznie problem? Sprawdź...",
   "conversation_id": "<ID z kroku 4>",
-  "cwd": "G:\\Starfield"
+  "cwd": "<game_root>"
 })
 # 7. Devin implementuje poprawki samodzielnie
 ```
@@ -347,7 +347,7 @@ agy_run_sync({
     
     Uwzględnij: Creation Engine Starfield, nie Skyrim/FO4.
     NIE edytuj plików.",
-  "cwd": "G:\\Starfield",
+  "cwd": "<game_root>",
   "wait": "60s"
 })
 

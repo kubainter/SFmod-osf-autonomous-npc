@@ -1,0 +1,3 @@
+; OSF Autonomous - in-game self-test batch
+; Usage: console -> bat osfselftest
+cgf "OSF_SelfTests.RunAll"

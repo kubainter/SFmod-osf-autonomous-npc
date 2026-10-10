@@ -3,10 +3,10 @@
 **Role**: Starfield Animation Systems Engineer  
 **Status**: Read-Only Kinematic & Architectural Evaluation  
 **Reference Assets**:
-- Base Animation: [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb)
-- Chair Donor: [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb)
-- Modification Script: [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py)
-- Rig Definition: [`skeleton.rig`](file:///G:/Starfield/StarfieldDev/temp/temp_animations_extract/meshes/actors/human/characterassets/skeleton.rig) / [`skeleton_nodes.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/skeleton_nodes.py)
+- Base Animation: `solo_standing_touch.glb`
+- Chair Donor: `Blowjob07-ChairOffice-1.glb`
+- Modification Script: `modify_standself01.py`
+- Rig Definition: `skeleton.rig` / `skeleton_nodes.py`
 
 ---
 
@@ -59,7 +59,7 @@ HUSH_LEFT_ARM_QUATS = {
 }
 ```
 
-#### Offset Quaternions (applied via `multiply_quaternions(rest, offset)` as in [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py)):
+#### Offset Quaternions (applied via `multiply_quaternions(rest, offset)` as in `modify_standself01.py`):
 ```python
 LEFT_ARM_OFFSETS_HUSH = {
     'L_Clavicle': [-0.01302, -0.14030,  0.09145, 0.98579],
@@ -74,7 +74,7 @@ LEFT_ARM_OFFSETS_HUSH = {
 ## 2. Finger Pose Kinematics
 
 ### Rig Discrepancy Note: Starfield Rig Bone Naming
-In the Starfield humanoid rig (from [`skeleton_nodes.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/skeleton_nodes.py) and [`skeleton.rig`](file:///G:/Starfield/StarfieldDev/temp/temp_animations_extract/meshes/actors/human/characterassets/skeleton.rig)), finger segments are **zero-indexed base segments** followed by numbered children:
+In the Starfield humanoid rig (from `skeleton_nodes.py` and `skeleton.rig`), finger segments are **zero-indexed base segments** followed by numbered children:
 - **Index**: `L_Index` (proximal phalanx), `L_Index1` (intermediate phalanx), `L_Index2` (distal phalanx / tip).
 - **Middle**: `L_Middle`, `L_Middle1`, `L_Middle2`.
 - **Ring**: `L_Ring`, `L_Ring1`, `L_Ring2`.
@@ -129,7 +129,7 @@ For a natural hush gesture, the thumb cannot stay splayed out in rest pose:
 ## 3. Right Arm Adjustment (Seated Groin Reach vs. Thigh Clearance)
 
 ### Critical Finding: GE Donor Arm Does NOT Reach Groin
-Forward kinematics of the GE donor [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb) reveal the exact position of the male actor's right hand in furniture space:
+Forward kinematics of the GE donor `Blowjob07-ChairOffice-1.glb` reveal the exact position of the male actor's right hand in furniture space:
 - **Pelvic Midline / Pubic Area**: $X \approx 0.00\text{ to }0.04\text{ m},\; Y \approx 0.06\text{ to }0.10\text{ m},\; Z \approx 0.56\text{ m}$
 - **Donor `R_Wrist`**: $X = +0.3234\text{ m},\; Y = +0.0472\text{ m},\; Z = 0.6312\text{ m}$
 - **Donor `R_Index2`**: $X = +0.2697\text{ m},\; Y = +0.1627\text{ m},\; Z = 0.5836\text{ m}$
@@ -181,8 +181,8 @@ To shift the hand from the outer thigh into the groin without penetrating the ho
 
 ### The Underlying Binary Reality
 Inspection of the binary timeline chunks shows why this discrepancy exists:
-- [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb): 480 frames, sampled from $t = 0.041667\text{ s}$ (frame 1) to $t = 20.000000\text{ s}$ (frame 480).
-- [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb): 481 frames, sampled from $t = 0.000000\text{ s}$ (frame 0) to $t = 20.000000\text{ s}$ (frame 480).
+- `solo_standing_touch.glb`: 480 frames, sampled from $t = 0.041667\text{ s}$ (frame 1) to $t = 20.000000\text{ s}$ (frame 480).
+- `Blowjob07-ChairOffice-1.glb`: 481 frames, sampled from $t = 0.000000\text{ s}$ (frame 0) to $t = 20.000000\text{ s}$ (frame 480).
 
 In `Blowjob07`, Frame 0 ($t=0.0$) and Frame 480 ($t=20.0$) have **identical quaternion and translation values** across all bones:
 $$\Delta Q(\text{Frame } 0, \text{Frame } 480) = 0.000000$$
@@ -194,7 +194,7 @@ $$\Delta Q(\text{Frame } 0, \text{Frame } 480) = 0.000000$$
 1. **1:1 Timestamp Alignment**:
    `Blowjob07` frames $1..480$ have exact timestamps $[0.041667, 0.083333, \dots, 20.000000]$, which match `solo_standing_touch.glb` frame-for-frame to six decimal places.
 2. **Buffer Integrity & In-Place Modification**:
-   In [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py), the accessor count ($480$), bufferView byte lengths, and sampler indices are pre-allocated for 480 frames. Keeping 480 frames allows direct in-place channel transplantation without rebuilding the glTF buffer headers or risking accessor length mismatches.
+   In `modify_standself01.py`, the accessor count ($480$), bufferView byte lengths, and sampler indices are pre-allocated for 480 frames. Keeping 480 frames allows direct in-place channel transplantation without rebuilding the glTF buffer headers or risking accessor length mismatches.
 3. **Seamless Game Engine Wrap**:
    Because `Blowjob07` Frame 480 is identical to Frame 0, when the game engine reaches $t = 20.0\text{ s}$ and loops back to $t = 0.04167\text{ s}$, the delta is identical to advancing from Frame 0 to Frame 1. There is **zero loop pop**.
 
@@ -234,7 +234,7 @@ $$\Delta Q(\text{Frame } 0, \text{Frame } 480) = 0.000000$$
 ## 6. Breathing Interference and Counter-Compensation
 
 ### Kinematic Hierarchy Discovery
-Extracting the official skeleton hierarchy via [`CALUMI.Animation.dll`](file:///G:/Starfield/sf_animation_io_blender_addon.zip) confirms the joint tree:
+Extracting the official skeleton hierarchy via `CALUMI.Animation.dll` confirms the joint tree:
 ```
                [COM]
                  |
@@ -260,7 +260,7 @@ Extracting the official skeleton hierarchy via [`CALUMI.Animation.dll`](file:///
 **`C_Chest` is the immediate common ancestor of both the head and the arm.**
 
 ### Forward Kinematics Simulation of Breathing Cycle:
-We ran a 20.0-second simulation of the procedural breathing cycle from [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) ($\pm 2.10^\circ$ cumulative thoracic pitch expansion):
+We ran a 20.0-second simulation of the procedural breathing cycle from `modify_standself01.py` ($\pm 2.10^\circ$ cumulative thoracic pitch expansion):
 
 1. **Case A: Without `NECK_COUNTER_PITCH` (`C_Neck` stays locked to `C_Chest`)**:
    - When `C_Spine` through `C_Chest` pitch up and down during breathing, `C_Chest` rotates as a rigid body.
@@ -269,7 +269,7 @@ We ran a 20.0-second simulation of the procedural breathing cycle from [`modify_
    - The hand and lips move together through space naturally as the actor breathes.
 
 2. **Case B: With `NECK_COUNTER_PITCH = 2.0` (as used in standing touch)**:
-   - In standing touch, line 85 of [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) added $+2.0^\circ$ pitch to `C_Neck` to keep the eyes looking level at the horizon while the chest expands.
+   - In standing touch, line 85 of `modify_standself01.py` added $+2.0^\circ$ pitch to `C_Neck` to keep the eyes looking level at the horizon while the chest expands.
    - In `solo_chair_touch`, rotating `C_Neck` independently of `C_Chest` causes the lips to swing relative to the chest frame.
    - **Simulated Drift: $\mathbf{4.58\text{ mm}}$**.
    - At the peak of inhalation, the mouth pulls $4.6\text{ mm}$ forward and down, breaking skin contact.
@@ -297,7 +297,7 @@ The concept of `solo_chair_touch` is coherent, highly aesthetic, and completely 
 | **1-Frame Loop Match** | **Low** | Frame mismatch between donor ($481$) and base ($480$). | Slice donor frames $1..480$ (discard frame 0). Keeps exact $480$ count and identical timecode arrays. |
 
 ### Recommended Build Script Structure (`modify_chairself01.py`)
-When transitioning to implementation, the build script should follow the proven architecture of [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py), incorporating the validated parameters:
+When transitioning to implementation, the build script should follow the proven architecture of `modify_standself01.py`, incorporating the validated parameters:
 ```python
 # 1. Lower Body & Seated Spine: Grafted from Blowjob07 frames 1..480
 # 2. Left Arm: Static hush pose via LEFT_ARM_OFFSETS_HUSH + micro-tremor (0.1 Hz)

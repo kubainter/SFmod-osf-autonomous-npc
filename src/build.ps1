@@ -7,20 +7,26 @@
 $ErrorActionPreference = "Stop"
 
 # ---------------------------------------------------------------------------
-# Paths
+# Paths — game install comes from the STARFIELD_ROOT env var
 # ---------------------------------------------------------------------------
-$ProjectDir     = "G:\Starfield\src\OSFAutonomous"
-$ScriptSource   = "$ProjectDir\OSF_AutonomousManagerScript.psc"
+$GameRoot = $env:STARFIELD_ROOT
+if (-not $GameRoot) {
+    Write-Host "ERROR: set the STARFIELD_ROOT environment variable to your Starfield install directory." -ForegroundColor Red
+    exit 1
+}
+
+$ProjectDir     = $PSScriptRoot
+$ScriptSource   = "$ProjectDir\..\release\Data\Scripts\Source\OSF_AutonomousManagerScript.psc"
 $JsonSettings   = "$ProjectDir\osf.autonomous.json"
 
-$PapyrusCompiler = "G:\Starfield\Tools\Papyrus Compiler\PapyrusCompiler.exe"
-$PapyrusSourceDir = "G:\Starfield\Data\Scripts\Source"
-$PapyrusOutputDir = "G:\Starfield\Data\Scripts"
+$PapyrusCompiler = "$GameRoot\Tools\Papyrus Compiler\PapyrusCompiler.exe"
+$PapyrusSourceDir = "$GameRoot\Data\Scripts\Source"
+$PapyrusOutputDir = "$GameRoot\Data\Scripts"
 
 $EsmBuildScript  = "$ProjectDir\build_esm.ps1"
-$EsmOutputPath   = "G:\Starfield\Data\OSFAutonomous.esm"
+$EsmOutputPath   = "$GameRoot\Data\OSFAutonomous.esm"
 
-$OsfUiSettingsDir = "G:\Starfield\Data\SFSE\Plugins\OSFUI\settings"
+$OsfUiSettingsDir = "$GameRoot\Data\SFSE\Plugins\OSFUI\settings"
 
 # ---------------------------------------------------------------------------
 # Step 1: Copy Papyrus source to game's Source directory

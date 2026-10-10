@@ -1,3 +1,4 @@
+import os
 """
 Modify standself01.glb to reduce leg/hip motion while preserving upper body animation.
 Strategy: blend leg/hip rotation channels toward their rest-pose (first keyframe) value,
@@ -5,8 +6,8 @@ reducing amplitude by a factor. Keep translation channels for Root/COM/Hips at z
 """
 import gzip, struct, json, math, shutil, os
 
-SRC = 'G:/Starfield/Data/SAF/Animations/standself01.glb'
-DST_DIR = 'G:/Starfield/Data/OSF/Autonomous/Animations'
+SRC = os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/standself01.glb"
+DST_DIR = os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations"
 DST = os.path.join(DST_DIR, 'solo_standing_touch.glb')
 
 os.makedirs(DST_DIR, exist_ok=True)

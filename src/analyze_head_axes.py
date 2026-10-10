@@ -1,8 +1,9 @@
+import os
 import gzip, struct, json, math, glob, os
 
 SOURCES = [
-    'G:/Starfield/Data/SAF/Animations/standself01.glb',
-    'G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb',
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/SAF/Animations/standself01.glb",
+    os.environ.get("STARFIELD_ROOT", ".") + "/Data/OSF/Autonomous/Animations/solo_standing_touch.glb",
 ]
 
 

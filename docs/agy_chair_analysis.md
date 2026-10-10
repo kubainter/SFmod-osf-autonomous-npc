@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This analysis evaluates the creation of a **solo furniture animation** (seated on a chair) for the OSF Autonomous framework by extracting structural seating kinematics from existing Gergel Ebanex (GE) paired chair animations and synthesizing them with the procedural upper-body touch and caress mechanics established in [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) and [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb).
+This analysis evaluates the creation of a **solo furniture animation** (seated on a chair) for the OSF Autonomous framework by extracting structural seating kinematics from existing Gergel Ebanex (GE) paired chair animations and synthesizing them with the procedural upper-body touch and caress mechanics established in `modify_standself01.py` and `solo_standing_touch.glb`.
 
 ---
 
@@ -19,8 +19,8 @@ This analysis evaluates the creation of a **solo furniture animation** (seated o
 ### Verdict: Hybrid Pipeline (Option B Engine + Option A QA)
 **Option B is recommended as the core generation engine**, supported by **Option A for visual QA and micro-tuning**.
 
-1. **Exact 20.0-Second Loop Match**: Both [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb) (480 frames at 24 fps) and the target GE seated donor clip [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb) (481 frames at 24 fps) are **exactly 20.00 seconds** in duration. All existing procedural Fourier harmonics in [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) ($60\pi$ finger flutter, $14\pi$ arm caress, $10\pi$ breathing cycles) map 1:1 onto the donor's timeline without time-stretching or interpolation artifacts.
-2. **Skeleton Sanitization**: [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb) contains 204 nodes (including male face bones, penis bones `C_Penis_01..06`, and `Naked_M:0Er` mesh references). In contrast, [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb) contains the clean 128-node female humanoid skeleton (including `C_Waist`). Starting from [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb) as the base container and grafting lower-body rotation/translation tracks from GE preserves rig integrity and prevents male mesh pollution.
+1. **Exact 20.0-Second Loop Match**: Both `solo_standing_touch.glb` (480 frames at 24 fps) and the target GE seated donor clip `Blowjob07-ChairOffice-1.glb` (481 frames at 24 fps) are **exactly 20.00 seconds** in duration. All existing procedural Fourier harmonics in `modify_standself01.py` ($60\pi$ finger flutter, $14\pi$ arm caress, $10\pi$ breathing cycles) map 1:1 onto the donor's timeline without time-stretching or interpolation artifacts.
+2. **Skeleton Sanitization**: `Blowjob07-ChairOffice-1.glb` contains 204 nodes (including male face bones, penis bones `C_Penis_01..06`, and `Naked_M:0Er` mesh references). In contrast, `solo_standing_touch.glb` contains the clean 128-node female humanoid skeleton (including `C_Waist`). Starting from `solo_standing_touch.glb` as the base container and grafting lower-body rotation/translation tracks from GE preserves rig integrity and prevents male mesh pollution.
 3. **Multi-Furniture Scalability**: A programmatic script can instantly generate variants for `ChairOffice`, `LodgeChair`, `ChairLeather`, and `ShipChairC` by swapping translation anchor parameters in milliseconds.
 
 ---
@@ -37,18 +37,18 @@ Across the GE chair animation catalog, the seated actor varies depending on scen
 
 | Category | Scene Name | Clip `-1` Role & Posture | Clip `-2` Role & Posture | Seated Actor Clip |
 | :--- | :--- | :--- | :--- | :--- |
-| **Type-A** | [`Blowjob07`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb) | **Male: Seated upright** ($Z=0.67\text{m}$, leg $var=0.0005$) | Female: Kneeling on floor ($Z=0.44\text{m}$) | **Clip `-1`** |
-| **Type-A** | [`Blowjob21`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob21-ChairOffice-1.glb) | Male: Standing ($Z=1.22\text{m}$) | Female: Seated ($Z=0.66\text{m}$, 449 frames) | Clip `-2` |
-| **Type-B** | [`Cowgirl05`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Cowgirl05-ChairOffice-1.glb) | Male: Seated ($Z=0.73\text{m}$, active hip motion) | Female: Straddling atop male ($Z=0.81\text{m}$) | Clip `-1` (Active/Occupied) |
-| **Type-C** | [`Missionary06`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Missionary06-ChairOffice-1.glb) | Male: Standing/leaning ($Z=0.95\text{m}$) | Female: Reclined flat on seat ($Z=0.64\text{m}$, rot $128^\circ$) | Clip `-2` (Awkward recline) |
-| **Type-D** | [`Standing11`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Standing11-ChairOffice-1.glb) | Male: Standing near chair ($Z=1.04\text{m}$) | Female: Standing near chair ($Z=1.06\text{m}$) | Neither (Both standing) |
-| **Type-E** | [`PowerBomb01`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/PowerBomb01-ChairOffice-1.glb) | Male: On floor ($Z=0.30\text{m}$) | Female: Seated leaned back $64^\circ$ ($Z=0.63\text{m}$) | Clip `-2` |
+| **Type-A** | `Blowjob07` | **Male: Seated upright** ($Z=0.67\text{m}$, leg $var=0.0005$) | Female: Kneeling on floor ($Z=0.44\text{m}$) | **Clip `-1`** |
+| **Type-A** | `Blowjob21` | Male: Standing ($Z=1.22\text{m}$) | Female: Seated ($Z=0.66\text{m}$, 449 frames) | Clip `-2` |
+| **Type-B** | `Cowgirl05` | Male: Seated ($Z=0.73\text{m}$, active hip motion) | Female: Straddling atop male ($Z=0.81\text{m}$) | Clip `-1` (Active/Occupied) |
+| **Type-C** | `Missionary06` | Male: Standing/leaning ($Z=0.95\text{m}$) | Female: Reclined flat on seat ($Z=0.64\text{m}$, rot $128^\circ$) | Clip `-2` (Awkward recline) |
+| **Type-D** | `Standing11` | Male: Standing near chair ($Z=1.04\text{m}$) | Female: Standing near chair ($Z=1.06\text{m}$) | Neither (Both standing) |
+| **Type-E** | `PowerBomb01` | Male: On floor ($Z=0.30\text{m}$) | Female: Seated leaned back $64^\circ$ ($Z=0.63\text{m}$) | Clip `-2` |
 
 ### Recommended Donor Clip: Type-A (`Blowjob07-ChairOffice-1.glb`)
-**Specific Clip**: [`SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb)
+**Specific Clip**: `SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb`
 - **Pose**: Calm, natural upright seating posture ($10.1^\circ$ backrest recline).
 - **Leg Stability**: Leg rotation variance is virtually zero ($0.0005$ for thighs, $0.000006$ for calves), providing a rock-solid, motionless lower body baseline.
-- **Timing**: 481 frames at 24.0 fps = **20.00 seconds** (identical to [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb)).
+- **Timing**: 481 frames at 24.0 fps = **20.00 seconds** (identical to `solo_standing_touch.glb`).
 - **Compatibility**: Starfield humanoid skeletons are unisex. Retargeting this seated lower-body pose onto a female actor works seamlessly in OSF.
 
 ---
@@ -101,13 +101,13 @@ graph TD
 | `R_Thigh`, `L_Thigh` | GE Seated | Full track replacement | Horizontal forward thigh elevation (~$90^\circ$ flexed from standing). |
 | `R_Calf`, `L_Calf` | GE Seated | Full track replacement | Vertical lower-leg hang down to floor (~$90^\circ$ bent knees). |
 | `R_Foot`, `L_Foot`, Toes | GE Seated | Full track replacement | Plantar contact with floor level ($Z=0$). |
-| `C_Spine`, `C_Spine1..2` | Hybrid | Seated curve base (`R=[0.208, -0.665, -0.206, 0.685]`) + [`TORSO_BREATHING_DEGREES`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L103-L108) | Retains seated backrest support while layering $\pm 0.5^\circ$ expansion breathing cycles. |
+| `C_Spine`, `C_Spine1..2` | Hybrid | Seated curve base (`R=[0.208, -0.665, -0.206, 0.685]`) + `TORSO_BREATHING_DEGREES` | Retains seated backrest support while layering $\pm 0.5^\circ$ expansion breathing cycles. |
 | `C_Chest` | Hybrid | Seated chest base + breathing pitch | Serves as the parent anchor for breasts and clavicles. |
-| `L_Clavicle`, `L_Biceps`, `L_Forearm`, `L_Wrist` | [`solo_standing_touch`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb) | Preserve [`LEFT_ARM_OFFSETS`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L110-L115) + caress micro-motion | **Local coordinate advantage**: `L_Clavicle` is parented to `C_Chest`. As the seated chest leans back, the left hand naturally follows the breast. Elbow is tucked medially, clearing chair armrests. |
-| `L_Thumb`, `L_Index..Pinky` | [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) | Full procedural [`LEFT_FINGER_PARAMS`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L129-L142) | Harmonic finger flexion caressing breast tissue. |
-| `R_Clavicle`, `R_Biceps`, `R_Forearm`, `R_Wrist` | GE Seated Base + Procedural Massage | Seated arm orientation + [`RIGHT_WRIST_AMP`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L101) / [`RIGHT_FOREARM_AMP`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L100) | **Crucial adjustment**: Standing right arm hangs vertically. In sitting, thighs are horizontal; standing arm would penetrate thigh. Using GE's seated arm base positions the forearm over the lap, allowing circular wrist stimulation ($\pm 1.2^\circ$) on top of the thigh. |
-| `R_Thumb`, `R_Index..Pinky` | [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) | Full procedural [`RIGHT_FINGER_PARAMS`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L117-L127) | $60\pi$ wave finger caress on lap/inner thigh. |
-| `C_Neck`, `C_Head` | [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py) | Emotional lift & roll (Pitch clamped) | Clamp maximum recline pitch from $-30^\circ \rightarrow -18^\circ$ to prevent the head from clipping into high chair headrests. |
+| `L_Clavicle`, `L_Biceps`, `L_Forearm`, `L_Wrist` | `solo_standing_touch` | Preserve `LEFT_ARM_OFFSETS` + caress micro-motion | **Local coordinate advantage**: `L_Clavicle` is parented to `C_Chest`. As the seated chest leans back, the left hand naturally follows the breast. Elbow is tucked medially, clearing chair armrests. |
+| `L_Thumb`, `L_Index..Pinky` | `modify_standself01.py` | Full procedural `LEFT_FINGER_PARAMS` | Harmonic finger flexion caressing breast tissue. |
+| `R_Clavicle`, `R_Biceps`, `R_Forearm`, `R_Wrist` | GE Seated Base + Procedural Massage | Seated arm orientation + `RIGHT_WRIST_AMP` / `RIGHT_FOREARM_AMP` | **Crucial adjustment**: Standing right arm hangs vertically. In sitting, thighs are horizontal; standing arm would penetrate thigh. Using GE's seated arm base positions the forearm over the lap, allowing circular wrist stimulation ($\pm 1.2^\circ$) on top of the thigh. |
+| `R_Thumb`, `R_Index..Pinky` | `modify_standself01.py` | Full procedural `RIGHT_FINGER_PARAMS` | $60\pi$ wave finger caress on lap/inner thigh. |
+| `C_Neck`, `C_Head` | `modify_standself01.py` | Emotional lift & roll (Pitch clamped) | Clamp maximum recline pitch from $-30^\circ \rightarrow -18^\circ$ to prevent the head from clipping into high chair headrests. |
 
 ---
 
@@ -133,7 +133,7 @@ Furniture in Starfield uses differing 3D origin points relative to seat cushions
 
 In the OSF engine, `anchor` is defined at the **manifest root level** (not per-scene). A dedicated manifest file must be created:
 
-### Recommended Manifest: [`osfautonomous-chairoffice.osf.json`](file:///G:/Starfield/Data/OSF/osfautonomous-chairoffice.osf.json)
+### Recommended Manifest: `osfautonomous-chairoffice.osf.json`
 
 ```json
 {
@@ -210,11 +210,11 @@ In the OSF engine, `anchor` is defined at the **manifest root level** (not per-s
 }
 ```
 
-### Papyrus Manager Adaptation in [`OSF_AutonomousManagerScript.psc`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/OSF_AutonomousManagerScript.psc)
-Currently, [`TryStartSoloScene`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/OSF_AutonomousManagerScript.psc#L1550) only starts unanchored standing scenes via `OSF.StartSceneByTags(soloArr, soloTags, soloOpts)`.
+### Papyrus Manager Adaptation in `OSF_AutonomousManagerScript.psc`
+Currently, `TryStartSoloScene` only starts unanchored standing scenes via `OSF.StartSceneByTags(soloArr, soloTags, soloOpts)`.
 
 To support chair furniture solo scenes autonomously:
-1. In [`TryStartSoloScene`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/OSF_AutonomousManagerScript.psc#L1550), check for a nearby chair:
+1. In `TryStartSoloScene`, check for a nearby chair:
    ```papyrus
    ObjectReference chairRef = FindNearbyFurniture(soloActor, 400.0)
    if chairRef != None && IsChairAnchor(chairRef)
@@ -227,28 +227,28 @@ To support chair furniture solo scenes autonomously:
        handle = OSF.StartSceneAtAnchor(soloArr, chairRef, chairTags, soloOpts)
    endif
    ```
-2. In [`IsActorEligible`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/OSF_AutonomousManagerScript.psc#L958), line 1015 currently rejects all seated actors (`sitState != 0`). A seated NPC already occupying an office chair can be enabled for solo downtime by relaxing the check if the furniture matches our chair keywords, allowing seamless transition into relaxation without standing up.
+2. In `IsActorEligible`, line 1015 currently rejects all seated actors (`sitState != 0`). A seated NPC already occupying an office chair can be enabled for solo downtime by relaxing the check if the furniture matches our chair keywords, allowing seamless transition into relaxation without standing up.
 
 ---
 
 ## 6. Step-by-Step Implementation Pipeline
 
 ### Phase 1: Python Builder Script (`modify_chair_touch.py`)
-Create a dedicated build script modeled on [`modify_standself01.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py):
+Create a dedicated build script modeled on `modify_standself01.py`:
 1. **Load Inputs**:
-   - Primary: [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb) (provides 128-node female skeleton, fingers, arm caress).
-   - Reference: [`Blowjob07-ChairOffice-1.glb`](file:///G:/Starfield/Data/SAF/Animations/GE/ChO/Blowjob07-ChairOffice-1.glb) (provides seated lower-body kinematics).
+   - Primary: `solo_standing_touch.glb` (provides 128-node female skeleton, fingers, arm caress).
+   - Reference: `Blowjob07-ChairOffice-1.glb` (provides seated lower-body kinematics).
 2. **Channel Transplantation**:
    - Replace `COM`, `C_Hips`, `R_Thigh`, `L_Thigh`, `R_Calf`, `L_Calf`, `R_Foot`, `L_Foot`, `R_Toe`, `L_Toe`, and thigh twist accessors with the seated donor data.
 3. **Upper-Body Blending**:
    - Graft `C_Spine` seated baseline rotation, multiply with breathing harmonics.
-   - Retain `L_Clavicle` $\rightarrow$ `L_Wrist` caress tracks from [`solo_standing_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/solo_standing_touch.glb).
+   - Retain `L_Clavicle` $\rightarrow$ `L_Wrist` caress tracks from `solo_standing_touch.glb` (shipped in `release/Data/OSF/Autonomous/Animations/`).
    - Graft `R_Clavicle` $\rightarrow$ `R_Wrist` seated orientation from donor, multiply with `RIGHT_WRIST_AMP` circular massage.
-   - Retain procedural finger parameters ([`LEFT_FINGER_PARAMS`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L129-L142) and [`RIGHT_FINGER_PARAMS`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/modify_standself01.py#L117-L127)).
+   - Retain procedural finger parameters (`LEFT_FINGER_PARAMS` and `RIGHT_FINGER_PARAMS` in `src/modify_standself01.py`).
    - Apply clamped head lift curves.
 4. **Dual Export**:
-   - Uncompressed glTF binary to [`G:\Starfield\StarfieldDev\animation_references\blender_edit\solo_chair_touch.glb`](file:///G:/Starfield/StarfieldDev/animation_references/blender_edit/).
-   - Gzip-compressed glTF binary to [`G:\Starfield\Data\OSF\Autonomous\Animations\solo_chair_touch.glb`](file:///G:/Starfield/Data/OSF/Autonomous/Animations/).
+   - Uncompressed glTF binary to the local workspace animation reference dir (`blender_edit/solo_chair_touch.glb`).
+   - Gzip-compressed glTF binary to `Data/OSF/Autonomous/Animations/solo_chair_touch.glb` under `STARFIELD_ROOT`.
 
 ### Phase 2: Blender Inspection & Visual QA
 1. Import `solo_chair_touch.glb` into Blender using `sf_animation_io`.
@@ -271,7 +271,7 @@ Create a dedicated build script modeled on [`modify_standself01.py`](file:///G:/
 | **Furniture Height Mismatch** | High (if cross-used) | Immersion break | Enforce separate manifests/clips for `ChairOffice` vs `LodgeChair`. |
 
 ### Verification Protocol
-1. **Binary Check**: Run [`verify_glb.py`](file:///G:/Starfield/StarfieldDev/src/OSFAutonomous/verify_glb.py) to validate glTF chunk alignment, 4-byte padding, accessor count matches (481 frames), and gzip header integrity.
+1. **Binary Check**: Run `verify_glb.py` to validate glTF chunk alignment, 4-byte padding, accessor count matches (481 frames), and gzip header integrity.
 2. **Blender Scrubbing**: Review all 481 frames at 24 fps to verify seamless looping between Frame 480 and Frame 0.
 3. **In-Game Playback**: Trigger scene in-game via OSF debug console / UI menu:
    - Test on an Office Chair in the Lodge library or MAST interior.

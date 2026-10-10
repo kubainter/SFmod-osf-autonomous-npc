@@ -23,7 +23,7 @@
           "options": ["ship", "interiors", "everywhere"],
           "optionLabels": ["Ship Only", "Ship + Outposts + Homes", "Everywhere"],
           "default": "ship",
-          "hint": "Where autonomous scenes may trigger. Ship Only = player's ship interior. Ship + Outposts + Homes = any interior cell. Everywhere = no location restriction."
+          "hint": "Where autonomous scenes may trigger. Ship Only = player's ship interior. Ship + Outposts + Homes = player's ship, outposts and homes only. Everywhere = no location restriction."
         },
         {
           "key": "bCompanionsOnly",
@@ -82,6 +82,36 @@
           "step": 50.0,
           "default": 500.0,
           "hint": "Minimum distance between concurrent scenes to prevent overlap. 500 = ~7m. Only matters when Max Concurrent Scenes is 2."
+        },
+        {
+          "key": "fCheckInterval",
+          "label": "Scan Interval (seconds)",
+          "type": "float",
+          "min": 15.0,
+          "max": 300.0,
+          "step": 5.0,
+          "default": 45.0,
+          "hint": "Seconds between eligibility scans. Lower = more responsive, higher = less script load."
+        },
+        {
+          "key": "fSceneTimeoutMinutes",
+          "label": "Scene Timeout (minutes)",
+          "type": "float",
+          "min": 0.5,
+          "max": 30.0,
+          "step": 0.5,
+          "default": 3.0,
+          "hint": "Real-time minutes before a running scene is stopped and actors freed."
+        },
+        {
+          "key": "fPairCooldownMinutes",
+          "label": "Pair Cooldown (game minutes)",
+          "type": "float",
+          "min": 1.0,
+          "max": 120.0,
+          "step": 1.0,
+          "default": 30.0,
+          "hint": "Minimum in-game time before the same two actors can form a pair again."
         }
       ]
     },
@@ -151,6 +181,26 @@
           "optionLabels": ["Static (slider)", "Dynamic (accelerating)", "Random per scene"],
           "default": "static",
           "hint": "Static = fixed speed. Dynamic = starts slow, speeds up each stage. Random = random variation per scene."
+        },
+        {
+          "key": "fMaxStartDistance",
+          "label": "Max Scene Start Distance",
+          "type": "float",
+          "min": 200.0,
+          "max": 10000.0,
+          "step": 100.0,
+          "default": 2000.0,
+          "hint": "Actors farther than this from the player cannot start scenes. Also sets the NPC scan radius (value + 200 units)."
+        },
+        {
+          "key": "fMaxZOffset",
+          "label": "Max Z Offset",
+          "type": "float",
+          "min": 0.0,
+          "max": 1000.0,
+          "step": 50.0,
+          "default": 200.0,
+          "hint": "Maximum vertical difference between pair actors (prevents pairing across decks/floors). 0 = check disabled."
         }
       ]
     },
@@ -163,7 +213,7 @@
           "label": "Romance Exclusivity Guard",
           "type": "bool",
           "default": true,
-          "hint": "Prevent romanced companions (relationship rank 4 = Lover) from participating in autonomous NPC scenes."
+          "hint": "Prevent romanced companions (relationship rank 3+ = Dating/Lover) from participating in autonomous NPC scenes."
         },
         {
           "key": "bStopOnPlayerWalkIn",
@@ -188,6 +238,23 @@
           "step": 5.0,
           "default": 20.0,
           "hint": "Chance of solo animation when no pair is found during a scan cycle."
+        },
+        {
+          "key": "bSoloPrivateOnly",
+          "label": "Solo Scenes Private Only",
+          "type": "bool",
+          "default": true,
+          "hint": "Restrict solo downtime scenes to private interiors (ship, outposts, homes). OFF allows solo scenes wherever the location mode permits."
+        },
+        {
+          "key": "fWalkInDistance",
+          "label": "Walk-In Distance",
+          "type": "float",
+          "min": 25.0,
+          "max": 1000.0,
+          "step": 25.0,
+          "default": 150.0,
+          "hint": "Distance at which the player counts as 'walking in' for Interrupt Scene on Walk-In. 150 = ~2m."
         }
       ]
     }

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
+import os
 """Verify kinematic profiles of newly generated solo clips."""
 import analyze_kinematics as ak
 import json, os
 
-ANIM_DIR = r"G:\Starfield\Data\OSF\Autonomous\Animations"
+ANIM_DIR = os.environ.get("STARFIELD_ROOT", ".") + r"\\Data\\OSF\\Autonomous\\Animations"
 files = ["solo_standing_touch.glb", "solo_sensual_caress.glb", "solo_sensual_touch.glb"]
 
 for fname in files:

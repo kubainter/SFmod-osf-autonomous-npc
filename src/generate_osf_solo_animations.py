@@ -747,7 +747,7 @@ def synthesize_sensual_touch(builder: GLBAnimationBuilder, seed: int = 505):
 def main():
     if not STARFIELD_SKELETON_NODES:
         print("ERROR: Skeleton nodes not loaded. Run skeleton extraction first.")
-        print("  Expected: G:\\Starfield\\src\\OSFAutonomous\\skeleton_nodes.py")
+        print("  Expected: skeleton_nodes.py alongside this script")
         return
 
     print(f"OSF Autonomous — Procedural Solo Animation Generator v2")

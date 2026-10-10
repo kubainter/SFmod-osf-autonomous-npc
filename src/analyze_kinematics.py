@@ -9,7 +9,7 @@ JSON + BIN chunks, and measure biomechanical motion characteristics:
   - axis of dominant motion
 
 Results are printed to stdout and written as JSON to
-G:\\Starfield\\src\\OSFAutonomous\\kinematic_profiles.json
+kinematic_profiles.json alongside this script.
 """
 
 import gzip
@@ -22,8 +22,8 @@ from collections import defaultdict
 
 import numpy as np
 
-ANIM_DIR = r"G:\Starfield\Data\SAF\Animations"
-OUT_JSON = r"G:\Starfield\src\OSFAutonomous\kinematic_profiles.json"
+ANIM_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "Data", "SAF", "Animations")
+OUT_JSON = os.path.join(os.path.dirname(__file__), "kinematic_profiles.json")
 
 FILES = [
     "standself01.glb",
