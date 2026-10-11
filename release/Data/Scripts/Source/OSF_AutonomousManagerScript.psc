@@ -1563,6 +1563,12 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
         return
     endif
 
+    ; Actor 3D guard — ensure actors remain loaded and active in the cell
+    if !akActorA.Is3DLoaded() || !akActorB.Is3DLoaded() || akActorA.IsDisabled() || akActorB.IsDisabled()
+        Log("Scene skipped — actor unloaded or disabled since eligibility check")
+        return
+    endif
+
     ; Re-check scene occupancy — eligibility was computed during the scan and
     ; an external scene (OSF UI browser launch, another mod) may have claimed
     ; an actor since. Without this every candidate start below is refused.
@@ -2164,6 +2170,12 @@ Function TryStartSoloScene(Actor[] eligible)
     ; Pick a random eligible actor
     Actor soloActor = eligible[Utility.RandomInt(0, eligible.Length - 1)]
     if soloActor == None
+        return
+    endif
+
+    ; Actor 3D guard — ensure actor remains loaded and active in the cell
+    if !soloActor.Is3DLoaded() || soloActor.IsDisabled()
+        Log("Solo scene skipped — actor unloaded or disabled since eligibility check")
         return
     endif
 
