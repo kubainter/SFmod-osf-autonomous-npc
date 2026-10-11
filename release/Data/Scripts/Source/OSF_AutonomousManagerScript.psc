@@ -426,6 +426,18 @@ Function OnSceneEvent(OSFTypes:SceneEvent akEvent)
         ; Scene started — handle is already tracked in TryStartScene
         Log("Scene BEGIN — handle=" + akEvent.sceneHandle)
 
+        ; Log transition for actors
+        Actor[] beginParts2 = OSF.GetSceneParticipants(akEvent.sceneHandle)
+        if beginParts2 != None
+            int bi2 = 0
+            while bi2 < beginParts2.Length
+                if beginParts2[bi2] != None
+                    Log("[OSF-AutoNPC:State] [Actor: " + beginParts2[bi2].GetFormID() + "] STARTING -> PLAYING (Reason: OSF BEGIN event)")
+                endif
+                bi2 += 1
+            endwhile
+        endif
+
         ; Apply initial speed to all participants (calculate ONCE for consistency)
         float initialSpeed = CalculateInitialSpeed()
         Actor[] beginParts = OSF.GetSceneParticipants(akEvent.sceneHandle)
@@ -734,7 +746,7 @@ Event Actor.OnPlayerLoadGame(Actor akSender)
     ; Re-initialize keywords (safeguard for existing saves)
     InitKeywords()
     InitGearForms()
-    
+
     ; Ensure OnSit is registered for existing saves
     RegisterForRemoteEvent(Game.GetPlayer(), "OnSit")
 
@@ -1563,6 +1575,11 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
         return
     endif
 
+    if !akActorA.Is3DLoaded() || !akActorB.Is3DLoaded()
+        Log("[OSF-AutoNPC:State] [Actor: " + akActorA.GetFormID() + "," + akActorB.GetFormID() + "] IDLE -> IDLE (Reason: 3D not loaded)")
+        return
+    endif
+
     ; Re-check scene occupancy — eligibility was computed during the scan and
     ; an external scene (OSF UI browser launch, another mod) may have claimed
     ; an actor since. Without this every candidate start below is refused.
@@ -1796,7 +1813,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
                 packVariants[0] = ""
                 packVariants[1] = "ge"
                 packVariants[2] = "snusnu"
-                
+
                 int gi = 0
                 while candidateFree && gi < genderVariants.Length && handle <= 0
                     if genderVariants[gi] != ""
@@ -1826,7 +1843,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
                     endif
                     gi += 1
                 endwhile
-                
+
                 ; TIER 2: Anchor + any action for this furniture type —
                 ; action-agnostic queries can match a sex scene even when the
                 ; intent was foreplay, so strip follows the scene type again
@@ -1857,7 +1874,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
                     endif
                     gi += 1
                 endwhile
-                
+
                 if handle > 0
                     Log("  -> MATCHED: " + candidate + " handle=" + handle)
                 elseif candidateFree
@@ -2134,6 +2151,7 @@ Function TryStartScene(Actor akActorA, Actor akActorB)
             sceneActorB.Add(akActorB, 1)
             SetPairCooldown(akActorA, akActorB)
             StartSceneTimeoutTimer()
+            Log("[OSF-AutoNPC:State] [Actor: " + akActorA.GetFormID() + "," + akActorB.GetFormID() + "] IDLE -> STARTING (Reason: T" + matchedTier + " paired scene)")
             Log("Scene started (T" + matchedTier + ", " + genderTag + ", action=" + actionTag + ") — handle=" + handle)
             return
         endif
@@ -2164,6 +2182,11 @@ Function TryStartSoloScene(Actor[] eligible)
     ; Pick a random eligible actor
     Actor soloActor = eligible[Utility.RandomInt(0, eligible.Length - 1)]
     if soloActor == None
+        return
+    endif
+
+    if !soloActor.Is3DLoaded()
+        Log("[OSF-AutoNPC:State] [Actor: " + soloActor.GetFormID() + "] IDLE -> IDLE (Reason: 3D not loaded)")
         return
     endif
 
@@ -2242,6 +2265,7 @@ Function TryStartSoloScene(Actor[] eligible)
         ; running and gets a real cooldown via ApplyCooldownToActor on END/ghost
         ; cleanup — a "id:id" pair key here would just be an orphan entry
         StartSceneTimeoutTimer()
+        Log("[OSF-AutoNPC:State] [Actor: " + soloActor.GetFormID() + "] IDLE -> STARTING (Reason: solo scene)")
         Log("Solo scene started — handle=" + handle + " actor=" + soloActor)
     else
         Log("Solo scene start failed — no matching solo scene")
@@ -2572,6 +2596,28 @@ Function EnforceSceneTimeouts()
                 endif
             endif
 
+
+            ; --- Alignment Watchdog ---
+            ; If a scene takes > 45 seconds but hasn't successfully started playing,
+            ; OSF internal pathing or alignment failed silently. Stop it now.
+            if elapsed > 45.0 && elapsed < timeoutSeconds
+                bool isPlaying = false
+                Actor[] parts = OSF.GetSceneParticipants(handle)
+                if parts != None && parts.Length > 0
+                    int pi = 0
+                    while pi < parts.Length
+                        if parts[pi] != None && OSF.IsPlaying(parts[pi])
+                            isPlaying = true
+                        endif
+                        pi += 1
+                    endwhile
+                endif
+                if !isPlaying
+                    Log("[OSF-AutoNPC:Watchdog] Aborting scene " + handle + " — stuck aligning for " + elapsed + "s")
+                    elapsed = timeoutSeconds + 1.0 ; Force it to trigger the stop logic below
+                endif
+            endif
+
             if elapsed >= timeoutSeconds
                 Log("Scene timeout — stopping handle " + handle + " (elapsed=" + elapsed + " real seconds)")
 
@@ -2643,6 +2689,7 @@ EndFunction
 ; Cooldown + anchor release + gear cleanup for one participant. Idempotent —
 ; safe to call for an actor already processed by a participants loop.
 Function ApplyCooldownToActor(Actor p)
+    Log("[OSF-AutoNPC:State] [Actor: " + p.GetFormID() + "] PLAYING/STARTING -> IDLE (Reason: Teardown/Cooldown applied)")
     float cooldownEnd = Utility.GetCurrentGameTime() + (GetCooldownMinutes() / 1440.0)
     int cIdx = cooldownActors.Find(p)
     if cIdx >= 0
@@ -2653,6 +2700,8 @@ Function ApplyCooldownToActor(Actor p)
     endif
     ; Release OSF anchor so actor can walk off furniture instead of standing on it
     OSF.ClearAnchor(p)
+    ; Force AI re-evaluation to unstick the actor from any aborted interaction state
+    p.EvaluatePackage()
     p.EvaluatePackage()
     UnequipStuckAttachments(p)
 EndFunction
@@ -3015,7 +3064,7 @@ EndFunction
 
 String Function GetNextActionTag(String asGenderTag)
     String[] pool = GetActiveActionPool(asGenderTag)
-    
+
     ; Count actual valid tags
     int validCount = 0
     while validCount < pool.Length && pool[validCount] != ""
@@ -3025,7 +3074,7 @@ String Function GetNextActionTag(String asGenderTag)
     if validCount == 0
         return ""
     endif
-    
+
     String tag = pool[iTagRotationIndex % validCount]
     iTagRotationIndex = (iTagRotationIndex + 1) % 1000  ; monotonic — avoids phase skipping between MF/FF pools
     return tag
