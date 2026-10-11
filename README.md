@@ -27,6 +27,10 @@ Animation framework (paired scenes + solo downtime animations).
 script compilation, settings-schema parity, and release-build integrity.
 In-game harnesses live in `tests/papyrus/` (see `docs/TESTING.md`).
 
+## Architecture & API
+
+See `docs/Scripts_API.md` and `docs/SCRIPT_MAP.md` for Papyrus script architectural notes and engine limitations.
+
 ## License
 
 MIT License — see LICENSE file for details.
