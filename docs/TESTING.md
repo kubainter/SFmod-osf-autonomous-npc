@@ -41,9 +41,9 @@ if `PapyrusCompiler.exe` or the flags file is missing.
 
 `PapyrusCompiler.exe` is flaky when the target `.psc` sits inside the game
 directory tree (bogus `filename does not match script name` errors and rare .NET crashes).
-Compiling a copy under `%TEMP%` is reliable — the test suite and
-`src/build_script_only.ps1` both do this and copy the resulting `.pex` into
-place. If you compile manually, prefer the same approach.
+Compiling a copy under `%TEMP%` is reliable — the test suite does this and
+copies the resulting `.pex` into place. If you compile manually, prefer the
+same approach.
 
 ## Tier 4 — in-game self-test harness
 

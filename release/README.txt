@@ -1,5 +1,5 @@
 OSF Autonomous NPC Interactions
-v1.1.2 - Packaging Hotfix 2
+v1.2.0 - Location Gating & Lifecycle Hardening
 Author: Botan
 
 Includes one custom solo self-touch animation with audio. Paired scenes are
@@ -51,7 +51,7 @@ Load order: Place after any OSF animation pack ESMs.
   Example: *SnuSnuField.esm -> *OSFAutonomous.esm
 
 ================================================================================
-DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
+DEFAULT SETTINGS (27 in-game settings — change via F10 menu)
 ================================================================================
 
 [General]
@@ -65,6 +65,9 @@ DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
   iMaxConcurrentScenes = 2        Max concurrent scenes (slider: 1 to 4)
   fActorCooldownMinutes= 10.0     Minutes before same actor can participate again
   fMinSceneSpacing     = 500.0    Min distance between scenes (~7m) to avoid overlap
+  fCheckInterval       = 45.0     Seconds between scan cycles (15 to 300)
+  fSceneTimeoutMinutes = 3.0      Safety stop for scenes stuck too long
+  fPairCooldownMinutes = 30.0     Minutes before the same pair can repeat
 
 [Scene Options]
   bRequireFurniture    = true     Only start scenes at beds/couches
@@ -75,15 +78,16 @@ DEFAULT SETTINGS (20 in-game settings — change via F10 menu)
   bAllowClassic        = true     Include missionary, cowgirl, spoon tags
   bAllowIntense        = true     Include doggy, reversecowgirl, riding tags
   sSpeedMode           = "static" "static", "dynamic" (accelerating), "random"
+  fMaxStartDistance    = 2000.0   Max distance actors can be from you at start
+  fMaxZOffset          = 200.0    Max vertical offset between pair (0 = off)
 
 [Romance & Solo]
   bRomanceExclusivity  = true     Romanced companions (rank >= 3) excluded
   bStopOnPlayerWalkIn  = false    Interrupt scene if player walks into the room
   bSoloDowntime        = true     Solo downtime when no pairs are available
   fSoloChance          = 20.0     Chance % for solo scene during scan cycle
-
-Note: Advanced engine values (scan interval: 45s, scene timeout: 3m, max start
-  distance: 2000 units) are internally fixed in v1.0.x for optimal performance.
+  bSoloPrivateOnly     = true     Solo scenes only in private locations
+  fWalkInDistance      = 150.0    Distance that counts as "walking in"
 
 ================================================================================
 WHO DOES THIS MOD AFFECT?
@@ -137,5 +141,5 @@ SFSE Team (ianpatt, behippo, scripthoge) — Starfield Script Extender
 GE Animation Pack authors — 388+ furniture-supported scenes
 SnuSnu Field author — femdom content and strapon support
 
-This is a v1.1.0 release. Bug reports and feedback welcome
+This is a v1.2.0 release. Bug reports and feedback welcome
 on the Nexus mod page.
